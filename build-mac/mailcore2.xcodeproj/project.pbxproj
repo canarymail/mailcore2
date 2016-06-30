@@ -4216,8 +4216,6 @@
 					"-lc++",
 					"-stdlib=libc++",
 					"-ObjC",
-					"-lcrypto",
-					"-lssl",
 					"-lresolv",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4256,8 +4254,6 @@
 					"-lc++",
 					"-stdlib=libc++",
 					"-ObjC",
-					"-lcrypto",
-					"-lssl",
 					"-lresolv",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4585,8 +4581,6 @@
 					"-lctemplate",
 					"-letpan",
 					"-lxml2",
-					"-lssl",
-					"-lcrypto",
 					"-lsasl2",
 					"-liconv",
 					"-all_load",
@@ -4621,8 +4615,6 @@
 					"-lctemplate",
 					"-letpan",
 					"-lxml2",
-					"-lssl",
-					"-lcrypto",
 					"-lsasl2",
 					"-liconv",
 					"-all_load",
