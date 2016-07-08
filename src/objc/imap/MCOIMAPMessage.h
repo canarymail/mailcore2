@@ -80,6 +80,9 @@
 - (NSString *) htmlRenderingWithFolder:(NSString *)folder
                               delegate:(id <MCOHTMLRendererIMAPDelegate>)delegate;
 
+- (instancetype) initWithSerializableDictionary:(NSDictionary *)dict;
+- (NSDictionary *) serializableDictionary;
+
 @end
 
 #endif
