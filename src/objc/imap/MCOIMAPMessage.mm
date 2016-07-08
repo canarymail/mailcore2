@@ -67,4 +67,15 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
     return result;
 }
 
+- (instancetype) initWithSerializableDictionary:(NSDictionary *)dict {
+    mailcore::HashMap * serializable = MCO_FROM_OBJC(mailcore::HashMap, dict);
+    self = MCO_TO_OBJC(mailcore::Object::objectWithSerializable(serializable));
+    [self retain];
+    return self;
+}
+
+- (NSDictionary *) serializableDictionary {
+    return MCO_TO_OBJC(MCO_FROM_OBJC(nativeType, self)->serializable());
+}
+
 @end
