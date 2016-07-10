@@ -77,6 +77,7 @@ namespace mailcore {
         virtual void importSerializable(HashMap * serializable);
         
     public: // private
+        virtual void importPartialIMAPEnvelope(struct mailimap_envelope * env);
         virtual void importIMAPEnvelope(struct mailimap_envelope * env);
         virtual void importIMAPReferences(Data * data);
         virtual void importIMAPInternalDate(struct mailimap_date_time * date);

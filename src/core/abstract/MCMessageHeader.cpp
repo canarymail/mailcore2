@@ -784,6 +784,34 @@ static Array * imap_mailbox_list_to_address_array(clist * imap_mailbox_list)
     return result;
 }
 
+void MessageHeader::importPartialIMAPEnvelope(struct mailimap_envelope * env)
+{
+    if (env->env_subject != NULL) {
+        char * subject;
+        
+        // subject
+        subject = env->env_subject;
+        setSubject(String::stringByDecodingMIMEHeaderValue(subject));
+    }
+    if (env->env_message_id != NULL) {
+        char * msgid;
+        size_t cur_token;
+        int r;
+        
+        cur_token = 0;
+        r = mailimf_msg_id_parse(env->env_message_id, strlen(env->env_message_id),
+                                 &cur_token, &msgid);
+        if (r == MAILIMF_NO_ERROR) {
+            // msg id
+            String * str;
+            
+            str = String::stringWithUTF8Characters(msgid);
+            setMessageID(str);
+            mailimf_msg_id_free(msgid);
+        }
+    }
+}
+
 void MessageHeader::importIMAPEnvelope(struct mailimap_envelope * env)
 {
     if (env->env_date != NULL) {
