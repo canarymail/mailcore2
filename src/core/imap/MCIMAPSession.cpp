@@ -2492,6 +2492,14 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         header = strdup("In-Reply-To");
         clist_append(hdrlist, header);
     }
+    if ((requestKind & IMAPMessagesRequestKindMessageId) != 0) {
+        char * header;
+        MCLog("request envelope");
+        header = strdup("Message-ID");
+        clist_append(hdrlist, header);
+        header = strdup("Subject");
+        clist_append(hdrlist, header);
+    }
     if ((requestKind & IMAPMessagesRequestKindHeaders) != 0) {
         char * header;
         
