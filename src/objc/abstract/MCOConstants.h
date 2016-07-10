@@ -149,7 +149,8 @@ typedef NS_OPTIONS(NSInteger, MCOIMAPMessagesRequestKind) {
     MCOIMAPMessagesRequestKindExtraHeaders   = 1 << 9,
     /* Request size of message */
     MCOIMAPMessagesRequestKindSize           = 1 << 10,
-
+    /** Message ID and Subject */
+    MCOIMAPMessagesRequestKindMessageId      = 1 << 11,
 };
 
 /** It defines the behavior of the STORE flags request.*/
