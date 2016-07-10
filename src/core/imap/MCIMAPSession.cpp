@@ -2255,7 +2255,11 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
                 
                 MCLog("parse envelope %lu", (unsigned long) uid);
                 env = att_static->att_data.att_env;
-                msg->header()->importIMAPEnvelope(env);
+                if ((requestKind & IMAPMessagesRequestKindMessageId) != 0) {
+                    msg->header()->importPartialIMAPEnvelope(env);
+                } else {
+                    msg->header()->importIMAPEnvelope(env);
+                }
                 hasHeader = true;
             }
             else if (att_static->att_type == MAILIMAP_MSG_ATT_BODY_SECTION) {
@@ -2498,6 +2502,9 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
     }
     if ((requestKind & IMAPMessagesRequestKindMessageId) != 0) {
         char * header;
+        // envelope
+        fetch_att = mailimap_fetch_att_new_envelope();
+        mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
         MCLog("request envelope");
         header = strdup("Message-ID");
         clist_append(hdrlist, header);
