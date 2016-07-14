@@ -2493,6 +2493,7 @@ String * String::substringWithRange(Range range)
 
 static chash * uniquedStringHash = NULL;
 static MC_LOCK_TYPE lock = MC_LOCK_INITIAL_VALUE;
+static MC_LOCK_TYPE buffLock = MC_LOCK_INITIAL_VALUE;
 
 static void initUniquedStringHash()
 {
@@ -2539,6 +2540,7 @@ String * String::htmlEncodedString()
     
     static char buf[kBufSz];
     
+    MC_LOCK(&buffLock);
     int outVal = -1;
     int nBufConsumed;
     int inStrSz;
@@ -2558,6 +2560,7 @@ String * String::htmlEncodedString()
         htmlStr->appendUTF8Characters(buf);
         nInStrConsumed += inStrSz;
     } while (nInStrConsumed != kInStrSz);
+    MC_UNLOCK(&buffLock);
     
     htmlStr->replaceOccurrencesOfString(MCSTR("\n"), MCSTR("<br/>"));
     
