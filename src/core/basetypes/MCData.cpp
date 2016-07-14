@@ -395,7 +395,10 @@ String * Data::charsetWithFilteredHTMLWithoutHint(bool filterHTML)
     const char * cName;
     String * result;
     
+    static MC_LOCK_TYPE heapLock = MC_LOCK_INITIAL_VALUE;
+    MC_LOCK(&heapLock);
     detector = ucsdet_open(&err);
+    MC_UNLOCK(&heapLock);
     ucsdet_setText(detector, bytes(), length(), &err);
     ucsdet_enableInputFilter(detector, filterHTML);
     match = ucsdet_detect(detector, &err);
