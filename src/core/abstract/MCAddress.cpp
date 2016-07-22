@@ -322,9 +322,6 @@ Object * Address::copy()
 
 void Address::setDisplayName(String * displayName)
 {
-    if (displayName != NULL) {
-        displayName->replaceOccurrencesOfString(MCSTR(","), MCSTR(""));
-    }
     MC_SAFE_REPLACE_COPY(String, mDisplayName, displayName);
 }
 
