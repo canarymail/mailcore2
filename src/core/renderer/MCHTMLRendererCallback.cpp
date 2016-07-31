@@ -110,6 +110,7 @@ mailcore::HashMap * HTMLRendererTemplateCallback::templateValuesForHeader(mailco
         fullFormatter = new mailcore::DateFormatter();
         fullFormatter->setDateStyle(mailcore::DateFormatStyleFull);
         fullFormatter->setTimeStyle(mailcore::DateFormatStyleFull);
+        fullFormatter->stringFromDate(0);
     }
     pthread_mutex_unlock(&formatterLock);
     dateString = fullFormatter->stringFromDate(header->date());
@@ -122,6 +123,7 @@ mailcore::HashMap * HTMLRendererTemplateCallback::templateValuesForHeader(mailco
         longFormatter = new mailcore::DateFormatter();
         longFormatter->setDateStyle(mailcore::DateFormatStyleLong);
         longFormatter->setTimeStyle(mailcore::DateFormatStyleLong);
+        longFormatter->stringFromDate(0);
     }
     pthread_mutex_unlock(&formatterLock);
     dateString = longFormatter->stringFromDate(header->date());
@@ -134,6 +136,7 @@ mailcore::HashMap * HTMLRendererTemplateCallback::templateValuesForHeader(mailco
         mediumFormatter = new mailcore::DateFormatter();
         mediumFormatter->setDateStyle(mailcore::DateFormatStyleMedium);
         mediumFormatter->setTimeStyle(mailcore::DateFormatStyleMedium);
+        mediumFormatter->stringFromDate(0);
     }
     pthread_mutex_unlock(&formatterLock);
     dateString = mediumFormatter->stringFromDate(header->date());
@@ -146,6 +149,7 @@ mailcore::HashMap * HTMLRendererTemplateCallback::templateValuesForHeader(mailco
         shortFormatter = new mailcore::DateFormatter();
         shortFormatter->setDateStyle(mailcore::DateFormatStyleShort);
         shortFormatter->setTimeStyle(mailcore::DateFormatStyleShort);
+        shortFormatter->stringFromDate(0);
     }
     pthread_mutex_unlock(&formatterLock);
     dateString = shortFormatter->stringFromDate(header->date());
