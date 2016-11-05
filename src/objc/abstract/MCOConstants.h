@@ -319,6 +319,8 @@ typedef NS_ENUM(NSInteger, MCOIMAPCapability) {
     MCOIMAPCapabilityAuthSRP,
     /** AUTH=XOAUTH2 Capability.*/
     MCOIMAPCapabilityXOAuth2,
+    /** Yahoo Highest Modseq Capability */
+    MCOIMAPCapabilityXYMHighestModseq,
     /** X-GM-EXT-1 Capability.*/
     MCOIMAPCapabilityGmail
 };
