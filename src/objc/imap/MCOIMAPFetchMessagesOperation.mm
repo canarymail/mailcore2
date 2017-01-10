@@ -38,6 +38,7 @@ typedef void (^CompletionType)(NSError *error, NSArray * messages, MCOIndexSet *
 - (void) dealloc
 {
     [_completionBlock release];
+    [_progress release];
     [super dealloc];
 }
 
