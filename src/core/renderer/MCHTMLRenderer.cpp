@@ -183,6 +183,172 @@ static bool messagePartContainsMimeType(AbstractMessagePart * part, String * mim
     return partContainsMimeType(part->mainPart(), mimeType);
 }
 
+# pragma mark - Attachments
+
+static void attachmentsForAbstractPart(AbstractPart * part, htmlRendererContext * context);
+
+static void attachmentsForAbstractMessage(String *folder, AbstractMessage * message,
+                                          HTMLRendererIMAPCallback * imapDataCallback,
+                                          HTMLRendererRFC822Callback * rfc822DataCallback,
+                                          HTMLRendererTemplateCallback * htmlCallback,
+                                          Array * attachments,
+                                          Array * relatedAttachments)
+{
+    AbstractPart * mainPart = NULL;
+
+    if (message->className()->isEqual(MCSTR("mailcore::IMAPMessage"))) {
+        mainPart = ((IMAPMessage *) message)->mainPart();
+    }
+    else if (message->className()->isEqual(MCSTR("mailcore::MessageParser"))) {
+        mainPart = ((MessageParser *) message)->mainPart();
+    }
+    if (mainPart == NULL) {
+        // needs a mainPart.
+        return;
+    }
+
+    MCAssert(mainPart != NULL);
+
+    htmlRendererContext context;
+    context.imapDataCallback = imapDataCallback;
+    context.rfc822DataCallback = rfc822DataCallback;
+    context.htmlCallback = htmlCallback;
+    context.relatedAttachments = NULL;
+    context.attachments = NULL;
+    context.firstRendered = 0;
+    context.folder = folder;
+    context.state = RENDER_STATE_NONE;
+
+    context.hasMixedTextAndAttachments = false;
+    context.pass = 0;
+    context.firstAttachment = false;
+    context.hasTextPart = false;
+
+    attachmentsForAbstractPart(mainPart, &context);
+
+    context.relatedAttachments = relatedAttachments;
+    context.attachments = attachments;
+    context.hasMixedTextAndAttachments = (context.state == RENDER_STATE_HAD_ATTACHMENT_THEN_TEXT);
+    context.pass = 1;
+    context.firstAttachment = false;
+    context.hasTextPart = false;
+
+    attachmentsForAbstractPart(mainPart, &context);
+}
+
+static void attachmentsForAbstractSinglePart(AbstractPart * part, htmlRendererContext * context);
+static void attachmentsForAbstractMessagePart(AbstractMessagePart * part, htmlRendererContext * context);
+static void attachmentsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context);
+static void attachmentsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context);
+static void attachmentsForAbstractMultipartAlternative(AbstractMultipart * part, htmlRendererContext * context);
+
+static void attachmentsForAbstractPart(AbstractPart * part, htmlRendererContext * context)
+{
+    switch (part->partType()) {
+        case PartTypeSingle:
+            attachmentsForAbstractSinglePart((AbstractPart *) part, context);
+            break;
+        case PartTypeMessage:
+            attachmentsForAbstractMessagePart((AbstractMessagePart *) part, context);
+            break;
+        case PartTypeMultipartMixed:
+            attachmentsForAbstractMultipartMixed((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartRelated:
+            attachmentsForAbstractMultipartRelated((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartAlternative:
+            attachmentsForAbstractMultipartAlternative((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartSigned:
+            attachmentsForAbstractMultipartMixed((AbstractMultipart *) part, context);
+            break;
+        default:
+            MCAssert(0);
+    }
+}
+
+static void attachmentsForAbstractSinglePart(AbstractPart * part, htmlRendererContext * context)
+{
+    String * mimeType = NULL;
+    if (part->mimeType() != NULL) {
+        mimeType = part->mimeType()->lowercaseString();
+    }
+    MCAssert(mimeType != NULL);
+    if (!isTextPart(part, context)) {
+        if (context->pass == 0) {
+            if (context->state == RENDER_STATE_NONE) {
+                context->state = RENDER_STATE_HAD_ATTACHMENT;
+            }
+            return;
+        }
+
+        if (part->uniqueID() == NULL) {
+            part->setUniqueID(String::uuidString());
+        }
+
+        context->firstAttachment = true;
+
+        if (context->attachments != NULL) {
+            context->attachments->addObject(part);
+        }
+    }
+}
+
+static void attachmentsForAbstractMessagePart(AbstractMessagePart * part, htmlRendererContext * context)
+{
+    if (context->pass == 0) {
+        return;
+    }
+    attachmentsForAbstractPart(part->mainPart(), context);
+}
+
+static void attachmentsForAbstractMultipartAlternative(AbstractMultipart * part, htmlRendererContext * context)
+{
+    AbstractPart * preferredAlternative = preferredPartInMultipartAlternative(part);
+    if (preferredAlternative == NULL)
+        return;
+
+    AbstractPart * calendar = NULL;
+    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+        if (partContainsMimeType(subpart, MCSTR("text/calendar"))) {
+            calendar = subpart;
+        }
+    }
+    attachmentsForAbstractPart(preferredAlternative, context);
+    if (calendar != NULL) {
+        attachmentsForAbstractPart(calendar, context);
+    }
+}
+
+static void attachmentsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context)
+{
+    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+        attachmentsForAbstractPart(subpart, context);
+    }
+}
+
+static void attachmentsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context)
+{
+    if (part->parts()->count() == 0) {
+        return;
+    }
+    AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(0);
+    if (context->relatedAttachments != NULL) {
+        for(unsigned int i = 1 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * otherSubpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            if (context->relatedAttachments != NULL) {
+                context->relatedAttachments->addObject(otherSubpart);
+            }
+        }
+    }
+    attachmentsForAbstractPart(subpart, context);
+}
+
+# pragma mark - HTML
+
 static String * htmlForAbstractMessage(String * folder, AbstractMessage * message,
                                        HTMLRendererIMAPCallback * imapDataCallback,
                                        HTMLRendererRFC822Callback * rfc822DataCallback,
@@ -593,10 +759,9 @@ Array * HTMLRenderer::attachmentsForMessage(AbstractMessage * message)
 {
     Array * attachments = Array::array();
     HTMLRendererIMAPDummyCallback * dataCallback = new HTMLRendererIMAPDummyCallback();
-    String * ignoredResult = htmlForAbstractMessage(NULL, message, dataCallback, dataCallback, NULL, attachments, NULL);
+    attachmentsForAbstractMessage(NULL, message, dataCallback, dataCallback, NULL, attachments, NULL);
     delete dataCallback;
     dataCallback = NULL;
-    (void) ignoredResult; // remove unused variable warning.
     return attachments;
 }
 
@@ -604,10 +769,9 @@ Array * HTMLRenderer::htmlInlineAttachmentsForMessage(AbstractMessage * message)
 {
     Array * htmlInlineAttachments = Array::array();
     HTMLRendererIMAPDummyCallback * dataCallback = new HTMLRendererIMAPDummyCallback();
-    String * ignoredResult = htmlForAbstractMessage(NULL, message, dataCallback, dataCallback, NULL, NULL, htmlInlineAttachments);
+    attachmentsForAbstractMessage(NULL, message, dataCallback, dataCallback, NULL, NULL, htmlInlineAttachments);
     delete dataCallback;
     dataCallback = NULL;
-    (void) ignoredResult; // remove unused variable warning.
     return htmlInlineAttachments;
 }
 
