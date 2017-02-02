@@ -289,8 +289,14 @@ static void attachmentsForAbstractSinglePart(AbstractPart * part, htmlRendererCo
 
         context->firstAttachment = true;
 
-        if (context->attachments != NULL) {
-            context->attachments->addObject(part);
+        if (part->isInlineAttachment()) {
+            if (context->relatedAttachments != NULL) {
+                context->relatedAttachments->addObject(part);
+            }
+        } else {
+            if (context->attachments != NULL) {
+                context->attachments->addObject(part);
+            }
         }
     }
 }
@@ -588,9 +594,15 @@ static String * htmlForAbstractSinglePart(AbstractPart * part, htmlRendererConte
         
         result->appendString(separatorString);
         result->appendString(content);
-        
-        if (context->attachments != NULL) {
-            context->attachments->addObject(part);
+
+        if (part->isInlineAttachment()) {
+            if (context->relatedAttachments != NULL) {
+                context->relatedAttachments->addObject(part);
+            }
+        } else {
+            if (context->attachments != NULL) {
+                context->attachments->addObject(part);
+            }
         }
         
         return result;
