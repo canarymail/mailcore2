@@ -46,7 +46,7 @@
 #include "MCIMAPMessageRenderingOperation.h"
 #include "MCIMAPCustomCommandOperation.h"
 
-#define DEFAULT_MAX_CONNECTIONS 3
+#define DEFAULT_MAX_CONNECTIONS 1
 
 using namespace mailcore;
 
