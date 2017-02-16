@@ -25,6 +25,8 @@ namespace mailcore {
         virtual uint32_t lastKnownUID();
         
         virtual void interruptIdle();
+
+        bool isInterrupted();
         
     public: // subclass behavior
         virtual void main();
@@ -36,7 +38,6 @@ namespace mailcore {
         pthread_mutex_t mLock;
         void prepare(void * data);
         void unprepare(void * data);
-        bool isInterrupted();
     };
     
 }

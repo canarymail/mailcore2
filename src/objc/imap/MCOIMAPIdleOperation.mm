@@ -15,6 +15,10 @@
 
 typedef void (^CompletionType)(NSError *error);
 
+@interface MCOIMAPIdleOperation ()
+
+@end
+
 @implementation MCOIMAPIdleOperation {
     CompletionType _completionBlock;
 }
@@ -57,7 +61,9 @@ typedef void (^CompletionType)(NSError *error);
         return;
     
     nativeType *op = MCO_NATIVE_INSTANCE;
-    if (op->error() == mailcore::ErrorNone) {
+    if (op->isInterrupted()) {
+        _completionBlock([NSError mco_errorWithErrorCode:mailcore::ErrorIdle]);
+    } else if (op->error() == mailcore::ErrorNone) {
         _completionBlock(nil);
     } else {
         _completionBlock([NSError mco_errorWithErrorCode:op->error()]);
