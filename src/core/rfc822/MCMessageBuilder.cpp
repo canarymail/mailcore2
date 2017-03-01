@@ -44,9 +44,10 @@ static struct mailmime * get_multipart_related(MessageBuilder * builder, const c
 static struct mailmime * get_multipart_signed_pgp(MessageBuilder * builder, const char * boundary_prefix)
 {
     struct mailmime * mime;
-    
+
     mime = part_multiple_new(builder, "multipart/signed", boundary_prefix);
     struct mailmime_parameter * param = mailmime_param_new_with_data((char *) "protocol", (char *) "application/pgp-signature");
+
     clist_append(mime->mm_content_type->ct_parameters, param);
     
     return mime;
@@ -863,9 +864,14 @@ struct mailmime * get_signature_part(Data * signature)
 {
     struct mailmime * mime;
     struct mailmime_content * content;
+    struct mailmime_disposition * disposition;
+
+    disposition = mailmime_disposition_new_with_data(MAILMIME_DISPOSITION_TYPE_ATTACHMENT,
+                                                     strdup("signature.asc"), NULL, NULL, NULL, (size_t) -1);
     
     content = mailmime_content_new_with_str("application/pgp-signature");
-    struct mailmime_fields * mime_fields = mailmime_fields_new_empty();
+    
+    struct mailmime_fields * mime_fields = mailmime_fields_new_with_data(NULL, NULL, NULL, disposition, NULL);
     mime = part_new_empty(NULL, content, mime_fields, NULL, 1);
     mailmime_set_body_text(mime, signature->bytes(), signature->length());
     
@@ -918,9 +924,13 @@ static struct mailmime * get_encrypted_part(Data * encryptedData)
 {
     struct mailmime * mime;
     struct mailmime_content * content;
+    struct mailmime_disposition * disposition;
+
+    disposition = mailmime_disposition_new_with_data(MAILMIME_DISPOSITION_TYPE_ATTACHMENT,
+                                                     strdup("encrypted.asc"), NULL, NULL, NULL, (size_t) -1);
     
     content = mailmime_content_new_with_str("application/octet-stream");
-    struct mailmime_fields * mime_fields = mailmime_fields_new_empty();
+    struct mailmime_fields * mime_fields = mailmime_fields_new_with_data(NULL, NULL, NULL, disposition, NULL);
     mime = part_new_empty(NULL, content, mime_fields, NULL, 1);
     mailmime_set_body_text(mime, encryptedData->bytes(), encryptedData->length());
     
