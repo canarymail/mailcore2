@@ -260,6 +260,8 @@ namespace mailcore {
         ErrorYahooSendMessageDailyLimitExceeded,
         ErrorOutlookLoginViaWebBrowser,
         ErrorTiscaliSimplePassword,
+        ErrorMissingFolder,
+        ErrorMissingHostname,
     };
     
     enum PartType {

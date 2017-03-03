@@ -1212,9 +1212,18 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
 IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError)
 {
     int r;
-    
+
     MCLog("status");
     MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
+
+    if (folder == NULL) {
+        * pError = ErrorMissingFolder;
+        MCLog("trying to fetch status without folder");
+        IMAPFolderStatus * empty;
+        empty = new IMAPFolderStatus();
+        empty->autorelease();
+        return empty;
+    }
 
     struct mailimap_mailbox_data_status * status;
 
