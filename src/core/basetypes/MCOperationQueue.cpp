@@ -21,6 +21,7 @@ OperationQueue::OperationQueue()
     mStarted = false;
     pthread_mutex_init(&mLock, NULL);
     mWaiting = false;
+    mThreadID = 0;
     mOperationSem = mailsem_new();
     mStartSem = mailsem_new();
     mStopSem = mailsem_new();
@@ -257,6 +258,11 @@ void OperationQueue::startThread()
     retain(); // (3)
     mQuitting = false;
     mStarted = true;
+
+    if (mThreadID != 0) {
+        pthread_join(mThreadID, NULL);
+    }
+
     pthread_create(&mThreadID, NULL, (void * (*)(void *)) OperationQueue::runOperationsOnThread, this);
     mailsem_down(mStartSem);
 }
