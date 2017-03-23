@@ -67,6 +67,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint32_t, uint32_t, setUidValidity, uidValidity)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setModSequenceValue, modSequenceValue)
 MCO_OBJC_SYNTHESIZE_SCALAR(int, int, setMessageCount, messageCount)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint32_t, uint32_t, setFirstUnseenUid, firstUnseenUid)
+MCO_OBJC_SYNTHESIZE_SCALAR(uint32_t, uint32_t, setUnseenCount, unseenCount)
 MCO_OBJC_SYNTHESIZE_SCALAR(BOOL, bool, setAllowsNewPermanentFlags, allowsNewPermanentFlags)
 
 @end

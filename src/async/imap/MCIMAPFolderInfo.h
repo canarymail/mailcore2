@@ -40,6 +40,9 @@ namespace mailcore {
         virtual void setAllowsNewPermanentFlags(bool allowsNewPermanentFlags);
         virtual bool allowsNewPermanentFlags();
         
+        virtual void setUnseenCount(uint32_t firstUnseenUid);
+        virtual uint32_t unseenCount();
+        
     public: // subclass behavior
         IMAPFolderInfo(IMAPFolderInfo * other);
         virtual Object * copy();		
@@ -50,6 +53,7 @@ namespace mailcore {
         uint64_t mModSequenceValue;
         int mMessageCount;
         uint32_t mFirstUnseenUid;
+        uint32_t mUnseenCount;
         bool mAllowsNewPermanentFlags;
         
         void init();

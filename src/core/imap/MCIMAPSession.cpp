@@ -1183,6 +1183,12 @@ void IMAPSession::select(String * folder, ErrorCode * pError)
             mFirstUnseenUid = 0;
         }
         
+        if (mImap->imap_selection_info->sel_unseen) {
+            mUnseenCount = mImap->imap_selection_info->sel_unseen;
+        } else {
+            mUnseenCount = 0;
+        }
+        
         if (mImap->imap_selection_info->sel_perm_flags) {
           clistiter * cur;
 
@@ -4128,6 +4134,11 @@ unsigned int IMAPSession::lastFolderMessageCount()
 uint32_t IMAPSession::firstUnseenUid()
 {
     return mFirstUnseenUid;
+}
+
+uint32_t IMAPSession::unseenCount()
+{
+    return mUnseenCount;
 }
 
 IMAPSyncResult * IMAPSession::syncMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,

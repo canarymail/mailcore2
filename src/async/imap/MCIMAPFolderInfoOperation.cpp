@@ -52,6 +52,7 @@ void IMAPFolderInfoOperation::main()
     mInfo->setMessageCount(session()->session()->lastFolderMessageCount());
     mInfo->setFirstUnseenUid(session()->session()->firstUnseenUid());
     mInfo->setAllowsNewPermanentFlags(session()->session()->allowsNewPermanentFlags());
+    mInfo->setUnseenCount(session()->session()->unseenCount());
 
     setError(error);
 }

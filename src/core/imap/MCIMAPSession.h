@@ -182,6 +182,7 @@ namespace mailcore {
         virtual uint64_t modSequenceValue();
         virtual unsigned int lastFolderMessageCount();
         virtual uint32_t firstUnseenUid();
+        virtual uint32_t unseenCount();
         
         virtual bool isIdleEnabled();
         virtual bool isXListEnabled();
@@ -269,6 +270,7 @@ namespace mailcore {
         uint64_t mModSequenceValue;
         unsigned int mFolderMsgCount;
         uint32_t mFirstUnseenUid;
+        uint32_t mUnseenCount;
         bool mYahooServer;
         bool mRamblerRuServer;
         bool mHermesServer;
