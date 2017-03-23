@@ -104,3 +104,13 @@ bool IMAPFolderInfo::allowsNewPermanentFlags()
 {
     return mAllowsNewPermanentFlags;
 }
+
+void IMAPFolderInfo::setUnseenCount(uint32_t unseenCount)
+{
+    mUnseenCount = unseenCount;
+}
+
+uint32_t IMAPFolderInfo::unseenCount()
+{
+    return mUnseenCount;
+}
