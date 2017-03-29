@@ -67,6 +67,13 @@ IndexSet * IMAPSearchOperation::uids()
 void IMAPSearchOperation::main()
 {
     ErrorCode error;
+    
+    session()->session()->loginIfNeeded(&error);
+    if (error != ErrorNone) {
+        setError(error);
+        return;
+    }
+
     if (mExpression != NULL) {
         mUids = session()->session()->search(folder(), mExpression, &error);
     }
