@@ -1230,6 +1230,15 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
         empty->autorelease();
         return empty;
     }
+    
+    if (mImap == NULL) {
+        * pError = ErrorDisconnected;
+        MCLog("trying to fetch status without connection");
+        IMAPFolderStatus * empty;
+        empty = new IMAPFolderStatus();
+        empty->autorelease();
+        return empty;
+    }
 
     struct mailimap_mailbox_data_status * status;
 
