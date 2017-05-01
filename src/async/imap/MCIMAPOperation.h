@@ -59,6 +59,8 @@ namespace mailcore {
         ErrorCode mError;
         bool mUrgent;
         
+        void afterMainOnMainThread();
+        
     private:
         virtual void bodyProgress(IMAPSession * session, unsigned int current, unsigned int maximum);
         virtual void bodyProgressOnMainThread(void * context);
