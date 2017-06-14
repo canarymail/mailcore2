@@ -48,6 +48,8 @@ namespace mailcore {
         virtual void setCheckCertificateEnabled(bool enabled);
         virtual bool isCheckCertificateEnabled();
         
+        virtual bool isCertificateValid();
+        
         virtual void setUseHeloIPEnabled(bool enabled);
         virtual bool useHeloIPEnabled();
         

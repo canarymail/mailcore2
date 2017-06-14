@@ -134,6 +134,10 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     return MCO_OBJC_BRIDGE_GET(serverIdentity);
 }
 
+- (BOOL)isCertificateValid {
+    return MCO_NATIVE_INSTANCE->isCertificateValid();
+}
+
 - (NSString *) gmailUserDisplayName
 {
     return MCO_TO_OBJC(_session->gmailUserDisplayName());

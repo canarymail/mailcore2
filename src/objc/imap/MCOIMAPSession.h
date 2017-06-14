@@ -78,8 +78,11 @@
 /** This is the timeout of the connection. */
 @property (nonatomic, assign) NSTimeInterval timeout;
 
-/** When set to YES, the connection will fail if the certificate is incorrect. */
+/** When set to YES, the connection will check if the certificate is incorrect. */
 @property (nonatomic, assign, getter=isCheckCertificateEnabled) BOOL checkCertificateEnabled;
+
+/** Certificate validity. */
+@property (nonatomic, assign, readonly) BOOL isCertificateValid;
 
 /** When set to YES, VoIP capability will be enabled on the IMAP connection on iOS */
 @property (nonatomic, assign, getter=isVoIPEnabled) BOOL voIPEnabled;

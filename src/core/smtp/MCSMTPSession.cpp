@@ -171,6 +171,11 @@ bool SMTPSession::isCheckCertificateEnabled()
     return mCheckCertificateEnabled;
 }
 
+bool SMTPSession::isCertificateValid()
+{
+    return mIsCertificateValid;
+}
+
 bool SMTPSession::checkCertificate()
 {
     if (!isCheckCertificateEnabled())
@@ -330,10 +335,7 @@ void SMTPSession::connect(ErrorCode * pError)
                 goto close;
             }
             MCLog("done");
-            if (!checkCertificate()) {
-                * pError = ErrorCertificate;
-                goto close;
-            }
+            mIsCertificateValid = checkCertificate();
             
             MCLog("init after starttls");
             if (useHeloIPEnabled()) {
@@ -360,10 +362,8 @@ void SMTPSession::connect(ErrorCode * pError)
                 * pError = ErrorConnection;
                 goto close;
             }
-            if (!checkCertificate()) {
-                * pError = ErrorCertificate;
-                goto close;
-            }
+
+            mIsCertificateValid = checkCertificate();
             
             MCLog("init");
             if (useHeloIPEnabled()) {

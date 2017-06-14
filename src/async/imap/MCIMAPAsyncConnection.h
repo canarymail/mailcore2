@@ -67,6 +67,8 @@ namespace mailcore {
         virtual void setCheckCertificateEnabled(bool enabled);
         virtual bool isCheckCertificateEnabled();
         
+        virtual bool isCertificateValid();
+        
         virtual void setVoIPEnabled(bool enabled);
         virtual bool isVoIPEnabled();
         

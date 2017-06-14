@@ -174,6 +174,11 @@ bool SMTPAsyncSession::isCheckCertificateEnabled()
     return mSession->isCheckCertificateEnabled();
 }
 
+bool SMTPAsyncSession::isCertificateValid()
+{
+    return mSession->isCertificateValid();
+}
+
 void SMTPAsyncSession::setUseHeloIPEnabled(bool enabled)
 {
     mSession->setUseHeloIPEnabled(enabled);

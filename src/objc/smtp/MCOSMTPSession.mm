@@ -100,6 +100,10 @@ MCO_OBJC_SYNTHESIZE_BOOL(setCheckCertificateEnabled, isCheckCertificateEnabled)
 MCO_OBJC_SYNTHESIZE_BOOL(setUseHeloIPEnabled, useHeloIPEnabled)
 MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue, dispatchQueue);
 
+- (BOOL)isCertificateValid {
+    return MCO_NATIVE_INSTANCE->isCertificateValid();
+}
+
 - (void) setConnectionLogger:(MCOConnectionLogger)connectionLogger
 {
     [_connectionLogger release];
