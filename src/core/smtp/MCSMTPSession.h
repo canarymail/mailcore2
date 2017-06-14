@@ -47,6 +47,8 @@ namespace mailcore {
         virtual void setCheckCertificateEnabled(bool enabled);
         virtual bool isCheckCertificateEnabled();
         
+        virtual bool isCertificateValid();
+        
         virtual void setUseHeloIPEnabled(bool enabled);
         virtual bool useHeloIPEnabled();
 
@@ -89,6 +91,7 @@ namespace mailcore {
         ConnectionType mConnectionType;
         time_t mTimeout;
         bool mCheckCertificateEnabled;
+        bool mIsCertificateValid;
         bool mUseHeloIPEnabled;
         bool mShouldDisconnect;
         bool mSendingCancelled;

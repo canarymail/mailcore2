@@ -188,6 +188,11 @@ bool IMAPAsyncSession::isCheckCertificateEnabled()
     return mCheckCertificateEnabled;
 }
 
+bool IMAPAsyncSession::isCertificateValid()
+{
+    return mIsCertificateValid;
+}
+
 void IMAPAsyncSession::setVoIPEnabled(bool enabled)
 {
     mVoIPEnabled = enabled;

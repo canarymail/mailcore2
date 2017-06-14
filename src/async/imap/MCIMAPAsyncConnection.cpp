@@ -221,6 +221,11 @@ bool IMAPAsyncConnection::isCheckCertificateEnabled()
     return mSession->isCheckCertificateEnabled();
 }
 
+bool IMAPAsyncConnection::isCertificateValid()
+{
+    return mSession->isCertificateValid();
+}
+
 void IMAPAsyncConnection::setVoIPEnabled(bool enabled)
 {
     mSession->setVoIPEnabled(enabled);

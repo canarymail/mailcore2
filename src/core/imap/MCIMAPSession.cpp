@@ -369,6 +369,7 @@ void IMAPSession::init()
     mAuthType = AuthTypeSASLNone;
     mConnectionType = ConnectionTypeClear;
     mCheckCertificateEnabled = true;
+    mIsCertificateValid = true;
     mVoIPEnabled = true;
     mDelimiter = 0;
     
@@ -528,6 +529,11 @@ bool IMAPSession::isCheckCertificateEnabled()
     return mCheckCertificateEnabled;
 }
 
+bool IMAPSession::isCertificateValid()
+{
+    return mIsCertificateValid;
+}
+
 void IMAPSession::setVoIPEnabled(bool enabled)
 {
     mVoIPEnabled = enabled;
@@ -679,11 +685,8 @@ void IMAPSession::connect(ErrorCode * pError)
             * pError = ErrorConnection;
             goto close;
         }
-        if (!checkCertificate()) {
-            MCLog("ssl connect certificate ERROR %d", r);
-            * pError = ErrorCertificate;
-            goto close;
-        }
+            
+        mIsCertificateValid = checkCertificate();
 
         break;
 

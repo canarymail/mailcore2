@@ -61,6 +61,8 @@
 /** When set to YES, the connection will fail if the certificate is incorrect. */
 @property (nonatomic, assign, getter=isCheckCertificateEnabled) BOOL checkCertificateEnabled;
 
+@property (nonatomic, assign, readonly) BOOL isCertificateValid;
+
 /**
  If set to YES, when sending the EHLO or HELO command, use IP address instead of hostname.
  Default is NO.
