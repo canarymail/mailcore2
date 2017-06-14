@@ -204,7 +204,6 @@ namespace mailcore {
         AuthType mAuthType;
         ConnectionType mConnectionType;
         bool mCheckCertificateEnabled;
-        bool mIsCertificateValid;
         bool mVoIPEnabled;
         IMAPNamespace * mDefaultNamespace;
         time_t mTimeout;

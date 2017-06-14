@@ -190,7 +190,12 @@ bool IMAPAsyncSession::isCheckCertificateEnabled()
 
 bool IMAPAsyncSession::isCertificateValid()
 {
-    return mIsCertificateValid;
+    bool valid = true;
+    for (unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        valid &= s->session()->isCertificateValid();
+    }
+    return valid;
 }
 
 void IMAPAsyncSession::setVoIPEnabled(bool enabled)
