@@ -38,6 +38,7 @@ void SMTPSession::init()
     mConnectionType = ConnectionTypeClear;
     mTimeout = 30;
     mCheckCertificateEnabled = true;
+    mIsCertificateValid = true;
     mUseHeloIPEnabled = false;
     mShouldDisconnect = false;
     mSendingCancelled = false;
