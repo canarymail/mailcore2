@@ -743,8 +743,6 @@ void IMAPSession::connect(ErrorCode * pError)
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
                 goto close;
-            } else {
-//                caps = storedCapabilities();
             }
         }
     }

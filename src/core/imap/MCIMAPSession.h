@@ -253,7 +253,6 @@ namespace mailcore {
         IMAPNamespace * mFetchedNamespace;
         IMAPIdentity * mServerIdentity;
         IMAPIdentity * mClientIdentity;
-        IndexSet * mFetchedCapabilities;
         time_t mTimeout;
         
         bool mBodyProgressEnabled;
