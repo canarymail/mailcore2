@@ -387,6 +387,7 @@ void IMAPSession::init()
     mWelcomeString = NULL;
     mNeedsMboxMailWorkaround = false;
     mDefaultNamespace = NULL;
+    mFetchedNamespace = NULL;
     mServerIdentity = new IMAPIdentity();
     mClientIdentity = new IMAPIdentity();
     mTimeout = 30;
@@ -434,6 +435,7 @@ IMAPSession::~IMAPSession()
     MC_SAFE_RELEASE(mOAuth2Token);
     MC_SAFE_RELEASE(mWelcomeString);
     MC_SAFE_RELEASE(mDefaultNamespace);
+    MC_SAFE_RELEASE(mFetchedNamespace);
     MC_SAFE_RELEASE(mCurrentFolder);
     pthread_mutex_destroy(&mIdleLock);
     pthread_mutex_destroy(&mConnectionLoggerLock);
@@ -741,6 +743,8 @@ void IMAPSession::connect(ErrorCode * pError)
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
                 goto close;
+            } else {
+//                caps = storedCapabilities();
             }
         }
     }
@@ -998,15 +1002,27 @@ void IMAPSession::login(ErrorCode * pError)
     if (isAutomaticConfigurationEnabled()) {
         bool hasDefaultNamespace = false;
         if (isNamespaceEnabled()) {
-            HashMap * result = fetchNamespace(pError);
-            if (* pError != ErrorNone) {
-                MCLog("fetch namespace failed");
-                return;
+            IMAPNamespace * personalNamespace = NULL;
+            
+            if (mFetchedNamespace != NULL) {
+                personalNamespace = mFetchedNamespace;
+                fprintf(stderr, "MCDEBUG: Using cached namespace");
+            } else {
+                HashMap * result = fetchNamespace(pError);
+                if (* pError != ErrorNone) {
+                    MCLog("fetch namespace failed");
+                    return;
+                }
+                personalNamespace = (IMAPNamespace *) result->objectForKey(IMAPNamespacePersonal);
             }
-            IMAPNamespace * personalNamespace = (IMAPNamespace *) result->objectForKey(IMAPNamespacePersonal);
+            
             if (personalNamespace != NULL) {
                 setDefaultNamespace(personalNamespace);
                 mDelimiter = defaultNamespace()->mainDelimiter();
+                if (mFetchedNamespace != personalNamespace) {
+                    MC_SAFE_RELEASE(mFetchedNamespace);
+                    mFetchedNamespace = (IMAPNamespace *) personalNamespace->retain();
+                }
                 hasDefaultNamespace = true;
             }
         }
