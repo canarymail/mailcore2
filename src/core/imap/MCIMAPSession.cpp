@@ -388,6 +388,7 @@ void IMAPSession::init()
     mNeedsMboxMailWorkaround = false;
     mDefaultNamespace = NULL;
     mFetchedNamespace = NULL;
+    mFetchedIdentity = NULL;
     mServerIdentity = new IMAPIdentity();
     mClientIdentity = new IMAPIdentity();
     mTimeout = 30;
@@ -427,6 +428,7 @@ IMAPSession::~IMAPSession()
     MC_SAFE_RELEASE(mUnparsedResponseData);
     MC_SAFE_RELEASE(mGmailUserDisplayName);
     MC_SAFE_RELEASE(mLoginResponse);
+    MC_SAFE_RELEASE(mFetchedIdentity);
     MC_SAFE_RELEASE(mClientIdentity);
     MC_SAFE_RELEASE(mServerIdentity);
     MC_SAFE_RELEASE(mHostname);
@@ -1008,7 +1010,6 @@ void IMAPSession::login(ErrorCode * pError)
             
             if (mFetchedNamespace != NULL) {
                 personalNamespace = mFetchedNamespace;
-                fprintf(stderr, "MCDEBUG: Using cached namespace");
             } else {
                 HashMap * result = fetchNamespace(pError);
                 if (* pError != ErrorNone) {
@@ -1022,8 +1023,7 @@ void IMAPSession::login(ErrorCode * pError)
                 setDefaultNamespace(personalNamespace);
                 mDelimiter = defaultNamespace()->mainDelimiter();
                 if (mFetchedNamespace != personalNamespace) {
-                    MC_SAFE_RELEASE(mFetchedNamespace);
-                    mFetchedNamespace = (IMAPNamespace *) personalNamespace->retain();
+                    MC_SAFE_REPLACE_RETAIN(IMAPNamespace, mFetchedNamespace, personalNamespace);
                 }
                 hasDefaultNamespace = true;
             }
@@ -1056,12 +1056,20 @@ void IMAPSession::login(ErrorCode * pError)
         }
         
         if (isIdentityEnabled()) {
-            IMAPIdentity * serverIdentity = identity(clientIdentity(), pError);
+            IMAPIdentity * serverIdentity = NULL;
+            if (mFetchedIdentity) {
+                serverIdentity = mFetchedIdentity;
+            } else {
+                serverIdentity = identity(clientIdentity(), pError);
+            }
             if (* pError != ErrorNone) {
                 // Ignore identity errors
                 MCLog("fetch identity failed");
             }
             else {
+                if (mFetchedIdentity != serverIdentity) {
+                    MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
+                }
                 MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
             }
         }
