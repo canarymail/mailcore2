@@ -251,6 +251,7 @@ namespace mailcore {
         char mDelimiter;
         IMAPNamespace * mDefaultNamespace;
         IMAPNamespace * mFetchedNamespace;
+        IMAPIdentity * mFetchedIdentity;
         IMAPIdentity * mServerIdentity;
         IMAPIdentity * mClientIdentity;
         time_t mTimeout;
