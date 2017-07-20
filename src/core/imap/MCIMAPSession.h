@@ -250,8 +250,10 @@ namespace mailcore {
         bool mVoIPEnabled;
         char mDelimiter;
         IMAPNamespace * mDefaultNamespace;
+        IMAPNamespace * mFetchedNamespace;
         IMAPIdentity * mServerIdentity;
         IMAPIdentity * mClientIdentity;
+        IndexSet * mFetchedCapabilities;
         time_t mTimeout;
         
         bool mBodyProgressEnabled;
