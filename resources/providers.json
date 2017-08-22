@@ -140,9 +140,12 @@
                 }
             ]
         },
-        "domain-match": [
+        "domain-match":[
             "zoho\\.com"
-        ]
+            ],
+        "mx-match":[
+            "mx\\.zoho\\.com"
+            ]
     },
     "juno": {
         "servers": {
