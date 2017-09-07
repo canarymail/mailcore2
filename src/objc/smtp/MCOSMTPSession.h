@@ -194,6 +194,8 @@
  */
 - (MCOSMTPOperation *) noopOperation;
 
+- (MCOSMTPOperation *) disconnectOperation;
+
 @end
 
 #endif
