@@ -2576,12 +2576,6 @@ String * String::htmlMessageContent()
 {
     String * str = this;
     
-    int htmlStart = str->locationOfString(MCSTR("<html"));
-    int htmlEnd   = str->locationOfString(MCSTR("</html>"));
-    if (htmlStart != -1 && htmlEnd != -1) {
-        return str->substringWithRange(RangeMake(htmlStart, htmlEnd - htmlStart + 7));
-    }
-    
     Array * lines = str->componentsSeparatedByString(MCSTR("\n"));
     
     while (1) {

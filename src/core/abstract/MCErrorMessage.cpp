@@ -51,6 +51,10 @@ static const char * localizedDescriptionTable[] = {
     "User is over the limit for messages allowed to be sent in a single day",        /** MCOErrorSendMessageDailyLimitExceeded */
     "The user needs to log in via the web browser",                                  /** MCOErrorOutlookLoginViaWebBrowser */
     "Credentials with password too simple",                                          /** MCOErrorTiscaliSimplePassword */
+    "Missing folder path",                                                           /** MCOErrorMissingFolder */
+    "Missing hostname",                                                              /** MCOErrorMissingHostname */
+    "Operation Disconnected",                                                        /** MCOErrorDisconnected */
+    "Operation Cancelled",                                                           /** MCOErrorCancelled */
 };
 
 String * mailcore::errorMessageWithErrorCode(ErrorCode errorCode)

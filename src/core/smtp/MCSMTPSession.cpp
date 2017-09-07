@@ -735,6 +735,7 @@ void SMTPSession::internalSendMessage(Address * from, Array * recipients, Data *
     sendingCancelled = mSendingCancelled;
     CANCEL_UNLOCK();
     if (sendingCancelled) {
+        * pError = ErrorCancelled;
         goto err;
     }
     
