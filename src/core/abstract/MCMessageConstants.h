@@ -263,6 +263,7 @@ namespace mailcore {
         ErrorMissingFolder,
         ErrorMissingHostname,
         ErrorDisconnected,
+        ErrorCancelled,
     };
     
     enum PartType {

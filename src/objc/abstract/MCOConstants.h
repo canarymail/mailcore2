@@ -428,6 +428,14 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorOutlookLoginViaWebBrowser,
     /** Tiscali Simple Mail Error */
     MCOErrorTiscaliSimplePassword,
+    /** Nil folder passed in as param*/
+    MCOErrorMissingFolder,
+    /** Nil hostname passed in as param */
+    MCOErrorMissingHostname,
+    /** Operation disconnected */
+    MCOErrorDisconnected,
+    /** Operation cancelled */
+    MCOErrorCancelled,
     /** The count of all errors */
     MCOErrorCodeCount,
 };
