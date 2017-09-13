@@ -518,11 +518,6 @@ void SMTPSession::login(ErrorCode * pError)
     }
 
     AuthType correctedAuthType = authType();
-    if (mOutlookServer) {
-        if (correctedAuthType == AuthTypeXOAuth2) {
-            correctedAuthType = AuthTypeXOAuth2Outlook;
-        }
-    }
 
     switch (correctedAuthType) {
         case 0:
