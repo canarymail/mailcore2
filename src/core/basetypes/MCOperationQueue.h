@@ -35,28 +35,19 @@ namespace mailcore {
         
     private:
         Array * mOperations;
-        pthread_t mThreadID;
-        bool mStarted;
-        struct mailsem * mOperationSem;
-        struct mailsem * mStartSem;
-        struct mailsem * mStopSem;
         pthread_mutex_t mLock;
-        bool mWaiting;
-        struct mailsem * mWaitingFinishedSem;
-        bool mQuitting;
         OperationQueueCallback * mCallback;
-#if __APPLE__
-        dispatch_queue_t mDispatchQueue;
-#endif
-        bool _pendingCheckRunning;
         
-        void startThread();
-        static void runOperationsOnThread(OperationQueue * queue);
-        void runOperations();
+        dispatch_queue_t mDispatchQueue;
+        dispatch_queue_t mRunningQueue;
+        
+        bool mRunning;
+        
+        void runNextOperation();
+        void opStarted();
+        void opStopped();
         void beforeMain(Operation * op);
         void callbackOnMainThread(Operation * op);
-        void checkRunningOnMainThread(void * context);
-        void checkRunningAfterDelay(void * context);
         void stoppedOnMainThread(void * context);
         void performOnCallbackThread(Operation * op, Method method, void * context, bool waitUntilDone);
     };
