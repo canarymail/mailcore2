@@ -1245,7 +1245,14 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     int r;
 
     MCLog("status");
-    MCAssert(mState == STATE_LOGGEDIN || mState == STATE_SELECTED);
+    if (mState != STATE_LOGGEDIN && mState != STATE_SELECTED) {
+        * pError = ErrorFolderState;
+        MCLog("trying to fetch status in bad state");
+        IMAPFolderStatus * empty;
+        empty = new IMAPFolderStatus();
+        empty->autorelease();
+        return empty;
+    }
 
     if (folder == NULL) {
         * pError = ErrorMissingFolder;

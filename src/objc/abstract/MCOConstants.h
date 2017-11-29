@@ -433,9 +433,11 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     /** Nil hostname passed in as param */
     MCOErrorMissingHostname,
     /** Operation disconnected */
-    MCOErrorDisconnected,
+    MCOErrorDisconnected, // 50
     /** Operation cancelled */
     MCOErrorCancelled,
+    /** Folder status invalid state */
+    MCOErrorFolderState,
     /** The count of all errors */
     MCOErrorCodeCount,
 };

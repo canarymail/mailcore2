@@ -262,8 +262,9 @@ namespace mailcore {
         ErrorTiscaliSimplePassword,
         ErrorMissingFolder,
         ErrorMissingHostname,
-        ErrorDisconnected,
+        ErrorDisconnected, // 50
         ErrorCancelled,
+        ErrorFolderState,
     };
     
     enum PartType {
