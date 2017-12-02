@@ -28,6 +28,8 @@ namespace mailcore {
 
         bool isInterrupted();
         
+        virtual Data * response();
+        
     public: // subclass behavior
         virtual void main();
         
@@ -38,6 +40,7 @@ namespace mailcore {
         pthread_mutex_t mLock;
         void prepare(void * data);
         void unprepare(void * data);
+        Data * mResponse;
     };
     
 }

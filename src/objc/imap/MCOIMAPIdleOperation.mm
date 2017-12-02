@@ -13,7 +13,7 @@
 #import "MCOOperation+Private.h"
 #import "MCOUtils.h"
 
-typedef void (^CompletionType)(NSError *error);
+typedef void (^CompletionType)(NSData *response, NSError *error);
 
 @interface MCOIMAPIdleOperation ()
 
@@ -42,7 +42,7 @@ typedef void (^CompletionType)(NSError *error);
     [super dealloc];
 }
 
-- (void) start:(void (^)(NSError *error))completionBlock
+- (void) start:(void (^)(NSData *response, NSError *error))completionBlock
 {
     _completionBlock = [completionBlock copy];
     [self start];
@@ -62,11 +62,11 @@ typedef void (^CompletionType)(NSError *error);
     
     nativeType *op = MCO_NATIVE_INSTANCE;
     if (op->isInterrupted()) {
-        _completionBlock([NSError mco_errorWithErrorCode:mailcore::ErrorIdle]);
+        _completionBlock(nil, [NSError mco_errorWithErrorCode:mailcore::ErrorIdle]);
     } else if (op->error() == mailcore::ErrorNone) {
-        _completionBlock(nil);
+        _completionBlock((NSData *)op->response()->destructiveNSData(), nil);
     } else {
-        _completionBlock([NSError mco_errorWithErrorCode:op->error()]);
+        _completionBlock(nil, [NSError mco_errorWithErrorCode:op->error()]);
     }
     [_completionBlock release];
     _completionBlock = nil;

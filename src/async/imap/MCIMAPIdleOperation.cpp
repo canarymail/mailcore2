@@ -18,6 +18,7 @@ IMAPIdleOperation::IMAPIdleOperation()
     mLastKnownUid = 0;
     mSetupSuccess = false;
     mInterrupted = false;
+    mResponse = NULL;
     pthread_mutex_init(&mLock, NULL);
 }
 
@@ -68,6 +69,7 @@ void IMAPIdleOperation::main()
     }
     
     ErrorCode error;
+    Data * response;
     session()->session()->selectIfNeeded(folder(), &error);
     if (error != ErrorNone) {
         setError(error);
@@ -80,10 +82,17 @@ void IMAPIdleOperation::main()
         return;
     }
     
-    session()->session()->idle(folder(), mLastKnownUid, &error);
+    session()->session()->idle(folder(), mLastKnownUid, &response, &error);
     setError(error);
+    mResponse = response;
+    MC_SAFE_RETAIN(mResponse);
     
     performMethodOnCallbackThread((Object::Method) &IMAPIdleOperation::unprepare, NULL, true);
+}
+
+Data * IMAPIdleOperation::response()
+{
+    return mResponse;
 }
 
 void IMAPIdleOperation::interruptIdle()

@@ -3623,7 +3623,7 @@ bool IMAPSession::setupIdle()
     return canIdle;
 }
 
-void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pError)
+void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response, ErrorCode * pError)
 {
     int r;
     
@@ -3709,6 +3709,9 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pErro
         return;
     }
     * pError = ErrorNone;
+    if (mImap->imap_stream_buffer != NULL) {
+        * response = Data::dataWithBytes(mImap->imap_stream_buffer->str, (unsigned int) mImap->imap_stream_buffer->len);
+    }
 }
 
 void IMAPSession::interruptIdle()

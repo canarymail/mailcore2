@@ -34,6 +34,12 @@ void IMAPFolderStatusOperation::main()
         return;
     }
     
+    session()->session()->select(folder(), &error);
+    if (error != ErrorNone) {
+        setError(error);
+        return;
+    }
+    
     IMAPFolderStatus *status = session()->session()->folderStatus(folder(), &error);
     if (error != ErrorNone) {
         setError(error);

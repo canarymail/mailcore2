@@ -160,7 +160,7 @@ namespace mailcore {
         virtual void getQuota(uint32_t *usage, uint32_t *limit, ErrorCode * pError);
         
         virtual bool setupIdle();
-        virtual void idle(String * folder, uint32_t lastKnownUID, ErrorCode * pError);
+        virtual void idle(String * folder, uint32_t lastKnownUID, Data **response, ErrorCode * pError);
         virtual void interruptIdle();
         virtual void unsetupIdle();
         
