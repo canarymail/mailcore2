@@ -64,7 +64,7 @@ typedef void (^CompletionType)(NSData *response, NSError *error);
     if (op->isInterrupted()) {
         _completionBlock(nil, [NSError mco_errorWithErrorCode:mailcore::ErrorIdle]);
     } else if (op->error() == mailcore::ErrorNone) {
-        _completionBlock((NSData *)op->response()->destructiveNSData(), nil);
+        _completionBlock(nil, nil);
     } else {
         _completionBlock(nil, [NSError mco_errorWithErrorCode:op->error()]);
     }
