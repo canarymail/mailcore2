@@ -3709,11 +3709,6 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
         return;
     }
     * pError = ErrorNone;
-//#if DEBUG
-//    if (mImap->imap_stream_buffer != NULL && mImap->imap_stream_buffer->len > 0) {
-//        * response = Data::dataWithBytes(mImap->imap_stream_buffer->str, (unsigned int) mImap->imap_stream_buffer->len);
-//    }
-//#endif
 }
 
 void IMAPSession::interruptIdle()
