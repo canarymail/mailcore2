@@ -36,6 +36,7 @@ namespace mailcore {
 /** Returns the part with the given unique identifier.*/
 - (MCOAbstractPart *) partForUniqueID:(NSString *)uniqueID;
 
+- (NSArray * /* MCOAbstractPart */) parts;
 /** All attachments in the message.
  It will return an array of MCOIMAPPart for MCOIMAPMessage.
  It will return an array of MCOAttachment for MCOMessageParser.
