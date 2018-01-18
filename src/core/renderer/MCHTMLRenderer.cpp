@@ -73,6 +73,7 @@ struct htmlRendererContext {
     bool hasTextPart;
     Array * relatedAttachments;
     Array * attachments;
+    Array * parts;
 };
 
 class DefaultTemplateCallback : public Object, public HTMLRendererTemplateCallback {
@@ -215,6 +216,7 @@ static void attachmentsForAbstractMessage(String *folder, AbstractMessage * mess
     context.htmlCallback = htmlCallback;
     context.relatedAttachments = NULL;
     context.attachments = NULL;
+    context.parts = NULL;
     context.firstRendered = 0;
     context.folder = folder;
     context.state = RENDER_STATE_NONE;
@@ -351,6 +353,124 @@ static void attachmentsForAbstractMultipartRelated(AbstractMultipart * part, htm
         }
     }
     attachmentsForAbstractPart(subpart, context);
+}
+
+# pragma mark - Parts
+
+static void partsForAbstractPart(AbstractPart * part, htmlRendererContext * context);
+
+static void partsForAbstractMessage(AbstractMessage * message, Array * parts)
+{
+    AbstractPart * mainPart = NULL;
+    
+    if (message->className()->isEqual(MCSTR("mailcore::IMAPMessage"))) {
+        mainPart = ((IMAPMessage *) message)->mainPart();
+    }
+    else if (message->className()->isEqual(MCSTR("mailcore::MessageParser"))) {
+        mainPart = ((MessageParser *) message)->mainPart();
+    }
+    if (mainPart == NULL) {
+        // needs a mainPart.
+        return;
+    }
+    
+    MCAssert(mainPart != NULL);
+    
+    htmlRendererContext context;
+    context.imapDataCallback = NULL;
+    context.rfc822DataCallback = NULL;
+    context.htmlCallback = NULL;
+    context.relatedAttachments = NULL;
+    context.attachments = NULL;
+    context.parts = NULL;
+    context.firstRendered = 0;
+    context.folder = NULL;
+    context.state = RENDER_STATE_NONE;
+    
+    context.hasMixedTextAndAttachments = false;
+    context.pass = 0;
+    context.firstAttachment = false;
+    context.hasTextPart = false;
+    context.parts = parts;
+    
+    partsForAbstractPart(mainPart, &context);
+}
+
+static void partsForAbstractSinglePart(AbstractPart * part, htmlRendererContext * context);
+static void partsForAbstractMessagePart(AbstractMessagePart * part, htmlRendererContext * context);
+static void partsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context);
+static void partsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context);
+static void partsForAbstractMultipartAlternative(AbstractMultipart * part, htmlRendererContext * context);
+
+static void partsForAbstractPart(AbstractPart * part, htmlRendererContext * context)
+{
+    switch (part->partType()) {
+        case PartTypeSingle:
+            partsForAbstractSinglePart((AbstractPart *) part, context);
+            break;
+        case PartTypeMessage:
+            partsForAbstractMessagePart((AbstractMessagePart *) part, context);
+            break;
+        case PartTypeMultipartMixed:
+            partsForAbstractMultipartMixed((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartRelated:
+            partsForAbstractMultipartRelated((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartAlternative:
+            partsForAbstractMultipartAlternative((AbstractMultipart *) part, context);
+            break;
+        case PartTypeMultipartSigned:
+            partsForAbstractMultipartMixed((AbstractMultipart *) part, context);
+            break;
+        default:
+            MCAssert(0);
+    }
+}
+
+static void partsForAbstractSinglePart(AbstractPart * part, htmlRendererContext * context)
+{
+    context->parts->addObject(part);
+}
+
+static void partsForAbstractMessagePart(AbstractMessagePart * part, htmlRendererContext * context)
+{
+    context->parts->addObject(part);
+    partsForAbstractPart(part->mainPart(), context);
+}
+
+static void partsForAbstractMultipartAlternative(AbstractMultipart * part, htmlRendererContext * context)
+{
+    context->parts->addObject(part);
+    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+        partsForAbstractPart(subpart, context);
+    }
+}
+
+static void partsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context)
+{
+    context->parts->addObject(part);
+    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+        partsForAbstractPart(subpart, context);
+    }
+}
+
+static void partsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context)
+{
+    context->parts->addObject(part);
+    if (part->parts()->count() == 0) {
+        return;
+    }
+    AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(0);
+    if (context->relatedAttachments != NULL) {
+        for(unsigned int i = 1 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * otherSubpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            context->parts->addObject(otherSubpart);
+        }
+    }
+    partsForAbstractPart(subpart, context);
 }
 
 # pragma mark - HTML
@@ -765,6 +885,13 @@ String * HTMLRenderer::htmlForIMAPMessage(String * folder,
                                           HTMLRendererTemplateCallback * htmlCallback)
 {
     return htmlForAbstractMessage(folder, message, dataCallback, NULL, htmlCallback, NULL, NULL);
+}
+
+Array * HTMLRenderer::partsForMessage(AbstractMessage * message)
+{
+    Array * parts = Array::array();
+    partsForAbstractMessage(message, parts);
+    return parts;
 }
 
 Array * HTMLRenderer::attachmentsForMessage(AbstractMessage * message)

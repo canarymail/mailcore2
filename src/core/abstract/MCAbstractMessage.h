@@ -26,6 +26,8 @@ namespace mailcore {
         /** Returns a part matching the given uniqueID */
         virtual AbstractPart * partForUniqueID(String * uniqueID);
         
+        /** Returns the list of all parts. */
+        virtual Array * /* AbstractPart */ parts();
         /** Returns the list of attachments, not part of the content of the message. */
         virtual Array * /* AbstractPart */ attachments();
         /** Returns the list of attachments that are shown inline in the content of the message. */

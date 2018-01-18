@@ -76,6 +76,10 @@ MCO_OBJC_SYNTHESIZE(MessageHeader, setHeader, header)
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partForUniqueID([uniqueID mco_mcString]));
 }
 
+- (NSArray *) parts {
+    return MCO_OBJC_BRIDGE_GET(parts);
+}
+
 - (NSArray *) attachments
 {
     return MCO_OBJC_BRIDGE_GET(attachments);

@@ -70,6 +70,11 @@ AbstractPart * AbstractMessage::partForUniqueID(String * uniqueID)
     return NULL;
 }
 
+Array * AbstractMessage::parts()
+{
+    return HTMLRenderer::partsForMessage(this);
+}
+
 Array * AbstractMessage::attachments()
 {
     return HTMLRenderer::attachmentsForMessage(this);
