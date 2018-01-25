@@ -566,8 +566,6 @@ static bool hasError(int errorCode)
 
 bool IMAPSession::checkCertificate()
 {
-    if (!isCheckCertificateEnabled())
-        return true;
     return mailcore::checkCertificate(mImap->imap_stream, hostname());
 }
 
@@ -691,6 +689,10 @@ void IMAPSession::connect(ErrorCode * pError)
         }
             
         mIsCertificateValid = checkCertificate();
+        if (isCheckCertificateEnabled() && !mIsCertificateValid) {
+            * pError = ErrorCertificate;
+            goto close;
+        }
 
         break;
 

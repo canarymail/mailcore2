@@ -179,8 +179,6 @@ bool SMTPSession::isCertificateValid()
 
 bool SMTPSession::checkCertificate()
 {
-    if (!isCheckCertificateEnabled())
-        return true;
     return mailcore::checkCertificate(mSmtp->stream, hostname());
 }
 
@@ -337,6 +335,10 @@ void SMTPSession::connect(ErrorCode * pError)
             }
             MCLog("done");
             mIsCertificateValid = checkCertificate();
+            if (isCheckCertificateEnabled() && !mIsCertificateValid) {
+                * pError = ErrorCertificate;
+                goto close;
+            }
             
             MCLog("init after starttls");
             if (useHeloIPEnabled()) {
@@ -365,6 +367,10 @@ void SMTPSession::connect(ErrorCode * pError)
             }
 
             mIsCertificateValid = checkCertificate();
+            if (isCheckCertificateEnabled() && !mIsCertificateValid) {
+                * pError = ErrorCertificate;
+                goto close;
+            }
             
             MCLog("init");
             if (useHeloIPEnabled()) {
