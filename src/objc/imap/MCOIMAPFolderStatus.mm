@@ -22,6 +22,16 @@
     MCORegisterClass(self, &typeid(nativeType));
 }
 
+- (instancetype)init {
+    self = [super init];
+    
+    mailcore::IMAPFolderStatus * status = new mailcore::IMAPFolderStatus();
+    status->retain();
+    _nativeStatus = status;
+    
+    return self;
+}
+
 - (instancetype) initWithMCFolderStatus:(mailcore::IMAPFolderStatus *)status
 {
     self = [super init];
