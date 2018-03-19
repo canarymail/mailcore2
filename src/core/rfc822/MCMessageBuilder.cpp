@@ -319,7 +319,7 @@ static struct mailmime * mime_from_attachment(MessageBuilder * builder, Attachme
     if (data == NULL) {
         data = Data::data();
     }
-    if (att->mimeType()->lowercaseString()->isEqual(MCSTR("message/rfc822"))) {
+    if (att->mimeType() && att->mimeType()->lowercaseString()->isEqual(MCSTR("message/rfc822"))) {
         size_t indx = 0;
         r = mailmime_parse(data->bytes(), data->length(), &indx, &mime);
         if (r != MAILIMF_NO_ERROR)
