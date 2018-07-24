@@ -617,7 +617,9 @@ static void logger(mailimap * imap, int log_type, const char * buffer, size_t si
 
 void IMAPSession::setup()
 {
-    MCAssert(mImap == NULL);
+    if (mImap != NULL) {
+        unsetup();
+    }
     
     mImap = mailimap_new(0, NULL);
     mailimap_set_timeout(mImap, timeout());
