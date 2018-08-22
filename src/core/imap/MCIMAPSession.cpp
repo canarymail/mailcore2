@@ -1094,6 +1094,11 @@ void IMAPSession::selectIfNeeded(String * folder, ErrorCode * pError)
     if (* pError != ErrorNone)
         return;
     
+    if (folder == NULL) {
+        * pError = ErrorMissingFolder;
+        return;
+    }
+    
     if (mState == STATE_SELECTED) {
         MCAssert(mCurrentFolder != NULL);
         if (mCurrentFolder->caseInsensitiveCompare(folder) != 0) {
