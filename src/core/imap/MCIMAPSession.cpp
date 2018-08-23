@@ -2611,6 +2611,10 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         fetch_att = mailimap_fetch_att_new_internaldate();
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
     }
+    if ((requestKind && IMAPMessagesRequestKindBody) != 0) {
+        fetch_att = mailimap_fetch_att_new_body_peek_section(mailimap_section_new(NULL));
+        mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
+    }
     if ((requestKind & IMAPMessagesRequestKindExtraHeaders) != 0) {
         // custom header request
         char * header;

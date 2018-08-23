@@ -78,6 +78,7 @@ namespace mailcore {
         IMAPMessagesRequestKindExtraHeaders  = 1 << 9,
         IMAPMessagesRequestKindSize          = 1 << 10,
         IMAPMessagesRequestKindMessageId      = 1 << 11,
+        IMAPMessagesRequestKindBody          = 1 << 12,
     };
     
     enum IMAPFetchRequestType {

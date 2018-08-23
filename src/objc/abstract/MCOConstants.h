@@ -151,6 +151,8 @@ typedef NS_OPTIONS(NSInteger, MCOIMAPMessagesRequestKind) {
     MCOIMAPMessagesRequestKindSize           = 1 << 10,
     /** Message ID and Subject */
     MCOIMAPMessagesRequestKindMessageId      = 1 << 11,
+    /** Body.Peek */
+    MCOIMAPMessagesRequestKindBody           = 1 << 12,
 };
 
 /** It defines the behavior of the STORE flags request.*/
