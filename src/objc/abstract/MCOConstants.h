@@ -440,6 +440,8 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorCancelled,
     /** Folder status invalid state */
     MCOErrorFolderState,
+    /** Idle interrupted */
+    MCOErrorIdleInterrupted,
     /** The count of all errors */
     MCOErrorCodeCount,
 };

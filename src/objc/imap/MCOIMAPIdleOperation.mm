@@ -62,7 +62,7 @@ typedef void (^CompletionType)(NSData *response, NSError *error);
     
     nativeType *op = MCO_NATIVE_INSTANCE;
     if (op->isInterrupted()) {
-        _completionBlock(nil, [NSError mco_errorWithErrorCode:mailcore::ErrorIdle]);
+        _completionBlock(nil, [NSError mco_errorWithErrorCode:mailcore::ErrorIdleInterrupted]);
     } else if (op->error() == mailcore::ErrorNone) {
         _completionBlock(nil, nil);
     } else {

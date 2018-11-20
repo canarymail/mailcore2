@@ -266,6 +266,7 @@ namespace mailcore {
         ErrorDisconnected, // 50
         ErrorCancelled,
         ErrorFolderState,
+        ErrorIdleInterrupted,
     };
     
     enum PartType {
