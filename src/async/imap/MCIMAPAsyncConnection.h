@@ -91,6 +91,7 @@ namespace mailcore {
 #endif
         
         virtual IMAPOperation * disconnectOperation();
+        virtual IMAPOperation * reconnectOperation();
 
     private:
         IMAPSession * mSession;

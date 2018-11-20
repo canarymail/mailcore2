@@ -165,6 +165,7 @@ namespace mailcore {
         virtual void unsetupIdle();
         
         virtual void connect(ErrorCode * pError);
+        virtual void reconnect(ErrorCode * pError);
         virtual void disconnect();
         
         virtual void noop(ErrorCode * pError);

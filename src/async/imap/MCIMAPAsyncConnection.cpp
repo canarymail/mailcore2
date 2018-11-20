@@ -35,6 +35,7 @@
 #include "MCIMAPQuotaOperation.h"
 #include "MCOperationQueueCallback.h"
 #include "MCIMAPDisconnectOperation.h"
+#include "MCIMAPReconnectOperation.h"
 #include "MCIMAPNoopOperation.h"
 #include "MCIMAPAsyncSession.h"
 #include "MCConnectionLogger.h"
@@ -271,6 +272,14 @@ IMAPOperation * IMAPAsyncConnection::disconnectOperation()
     return op;
 }
 
+IMAPOperation * IMAPAsyncConnection::reconnectOperation()
+{
+    IMAPReconnectOperation * op = new IMAPReconnectOperation();
+    op->setSession(this);
+    op->autorelease();
+    return op;
+}
+
 IMAPSession * IMAPAsyncConnection::session()
 {
     return mSession;
@@ -319,9 +328,9 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
     mOwner->retain();
     mScheduledAutomaticDisconnect = true;
 #if __APPLE__
-    performMethodOnDispatchQueueAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, dispatchQueue(), 30);
+    performMethodOnDispatchQueueAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, dispatchQueue(), 300);
 #else
-    performMethodAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, 30);
+    performMethodAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, 300);
 #endif
 
     if (scheduledAutomaticDisconnect) {
@@ -333,7 +342,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
 
-    IMAPOperation * op = disconnectOperation();
+    IMAPOperation * op = reconnectOperation();
     op->start();
 
     mOwner->release();

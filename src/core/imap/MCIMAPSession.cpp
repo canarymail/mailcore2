@@ -803,13 +803,6 @@ void IMAPSession::login(ErrorCode * pError)
 
     MC_SAFE_RELEASE(mLoginResponse);
     MC_SAFE_RELEASE(mUnparsedResponseData);
-
-    if (mImap->imap_connection_info != NULL) {
-        if (mImap->imap_connection_info->imap_capability != NULL) {
-            mailimap_capability_data_free(mImap->imap_connection_info->imap_capability);
-            mImap->imap_connection_info->imap_capability = NULL;
-        }
-    }
     
     const char * utf8username;
     const char * utf8password;
@@ -1064,22 +1057,22 @@ void IMAPSession::login(ErrorCode * pError)
         }
         
         if (isIdentityEnabled()) {
-            IMAPIdentity * serverIdentity = NULL;
-            if (mFetchedIdentity) {
-                serverIdentity = mFetchedIdentity;
-            } else {
-                serverIdentity = identity(clientIdentity(), pError);
-            }
-            if (* pError != ErrorNone) {
-                // Ignore identity errors
-                MCLog("fetch identity failed");
-            }
-            else {
-                if (mFetchedIdentity != serverIdentity) {
-                    MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
-                }
-                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
-            }
+//            IMAPIdentity * serverIdentity = NULL;
+//            if (mFetchedIdentity) {
+//                serverIdentity = mFetchedIdentity;
+//            } else {
+//                serverIdentity = identity(clientIdentity(), pError);
+//            }
+//            if (* pError != ErrorNone) {
+//                // Ignore identity errors
+//                MCLog("fetch identity failed");
+//            }
+//            else {
+//                if (mFetchedIdentity != serverIdentity) {
+//                    MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
+//                }
+//                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
+//            }
         }
     }
     else {
@@ -3751,6 +3744,12 @@ void IMAPSession::unsetupIdle()
 void IMAPSession::disconnect()
 {
     unsetup();
+}
+
+void IMAPSession::reconnect(ErrorCode * pError)
+{
+    mShouldDisconnect = true;
+    connectIfNeeded(pError);
 }
 
 IMAPIdentity * IMAPSession::identity(IMAPIdentity * clientIdentity, ErrorCode * pError)
