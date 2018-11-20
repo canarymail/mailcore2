@@ -4322,6 +4322,7 @@ void IMAPSession::applyCapabilities(IndexSet * capabilities)
     }
     if (capabilities->containsIndex(IMAPCapabilityGmail)) {
         mXListEnabled = false;
+        mCondstoreEnabled = true;
         mIsGmail = true;
     }
     if (capabilities->containsIndex(IMAPCapabilityIdle)) {
