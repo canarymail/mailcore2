@@ -403,6 +403,7 @@ void IMAPSession::init()
     mQipServer = false;
     mLastFetchedSequenceNumber = 0;
     mCurrentFolder = NULL;
+    mCurrentCapabilities = NULL;
     pthread_mutex_init(&mIdleLock, NULL);
     mState = STATE_DISCONNECTED;
     mImap = NULL;
@@ -439,6 +440,7 @@ IMAPSession::~IMAPSession()
     MC_SAFE_RELEASE(mDefaultNamespace);
     MC_SAFE_RELEASE(mFetchedNamespace);
     MC_SAFE_RELEASE(mCurrentFolder);
+    MC_SAFE_RELEASE(mCurrentCapabilities);
     pthread_mutex_destroy(&mIdleLock);
     pthread_mutex_destroy(&mConnectionLoggerLock);
 }
@@ -740,15 +742,16 @@ void IMAPSession::connect(ErrorCode * pError)
     mState = STATE_CONNECTED;
     
     if (isAutomaticConfigurationEnabled()) {
-        if ((mImap->imap_connection_info != NULL) && (mImap->imap_connection_info->imap_capability != NULL)) {
-            // Don't keep result. It will be kept in session state.
-            capabilitySetWithSessionState(IndexSet::indexSet());
-        }
-        else {
-            capability(pError);
+        if (mCurrentCapabilities != NULL) {
+            applyCapabilities(mCurrentCapabilities);
+        } else {
+            IndexSet *capabilities = capability(pError);
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
                 goto close;
+            } else {
+                MC_SAFE_REPLACE_RETAIN(IndexSet, mCurrentCapabilities, capabilities);
+                applyCapabilities(mCurrentCapabilities);
             }
         }
     }
@@ -990,15 +993,16 @@ void IMAPSession::login(ErrorCode * pError)
     mState = STATE_LOGGEDIN;
     
     if (isAutomaticConfigurationEnabled()) {
-        if ((mImap->imap_connection_info != NULL) && (mImap->imap_connection_info->imap_capability != NULL)) {
-            // Don't keep result. It will be kept in session state.
-            capabilitySetWithSessionState(IndexSet::indexSet());
-        }
-        else {
-            capability(pError);
+        if (mCurrentCapabilities != NULL) {
+            applyCapabilities(mCurrentCapabilities);
+        } else {
+            IndexSet *capabilities = capability(pError);
             if (* pError != ErrorNone) {
                 MCLog("capabilities failed");
                 return;
+            } else {
+                MC_SAFE_REPLACE_RETAIN(IndexSet, mCurrentCapabilities, capabilities);
+                applyCapabilities(mCurrentCapabilities);
             }
         }
     }
@@ -4305,15 +4309,7 @@ void IMAPSession::capabilitySetWithSessionState(IndexSet * capabilities)
 }
 
 IndexSet * IMAPSession::storedCapabilities() {
-    if (mImap == NULL ||
-        mImap->imap_connection_info == NULL ||
-        mImap->imap_connection_info->imap_capability == NULL) {
-        return NULL;
-    }
-    IndexSet *result = new IndexSet();
-    capabilitySetWithSessionState(result);
-    result->autorelease();
-    return result;
+    return (IndexSet *)MC_SAFE_COPY(mCurrentCapabilities);
 }
 
 void IMAPSession::applyCapabilities(IndexSet * capabilities)
