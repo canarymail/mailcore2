@@ -380,6 +380,11 @@ IMAPAsyncSession * IMAPAsyncConnection::owner()
     return mOwner;
 }
 
+void IMAPAsyncConnection::setNeedsReselect()
+{
+    mSession->setNeedsReselect();
+}
+
 void IMAPAsyncConnection::setConnectionLogger(ConnectionLogger * logger)
 {
     pthread_mutex_lock(&mConnectionLoggerLock);

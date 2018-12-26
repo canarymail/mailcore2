@@ -398,6 +398,14 @@ IMAPAsyncConnection * IMAPAsyncSession::sessionWithMinQueue(bool filterByFolder,
     return chosenSession;
 }
 
+void IMAPAsyncSession::setNeedsReselect()
+{
+    for (unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setNeedsReselect();
+    }
+}
+
 IMAPFolderInfoOperation * IMAPAsyncSession::folderInfoOperation(String * folder)
 {
     IMAPFolderInfoOperation * op = new IMAPFolderInfoOperation();

@@ -189,6 +189,11 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     MCO_NATIVE_INSTANCE->cancelAllOperations();
 }
 
+- (void)setNeedsReselect
+{
+    MCO_NATIVE_INSTANCE->setNeedsReselect();
+}
+
 #pragma mark - Operations
 
 #define MCO_TO_OBJC_OP(op) [self _objcOperationFromNativeOp:op];

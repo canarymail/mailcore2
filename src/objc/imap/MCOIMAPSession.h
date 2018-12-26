@@ -157,6 +157,8 @@
 */
 @property (nonatomic, copy) MCOOperationQueueRunningChangeBlock operationQueueRunningChangeBlock;
 
+- (void)setNeedsReselect;
+
 /**
  Cancel all operations
  */

@@ -414,6 +414,7 @@ void IMAPSession::init()
     mAutomaticConfigurationEnabled = true;
     mAutomaticConfigurationDone = false;
     mShouldDisconnect = false;
+    mNeedsReselect = false;
     mLoginResponse = NULL;
     mGmailUserDisplayName = NULL;
     mUnparsedResponseData = NULL;
@@ -1085,6 +1086,11 @@ void IMAPSession::login(ErrorCode * pError)
     MCLog("login ok");
 }
 
+void IMAPSession::setNeedsReselect()
+{
+    mNeedsReselect = true;
+}
+
 void IMAPSession::selectIfNeeded(String * folder, ErrorCode * pError)
 {
     loginIfNeeded(pError);
@@ -1096,7 +1102,11 @@ void IMAPSession::selectIfNeeded(String * folder, ErrorCode * pError)
         return;
     }
     
-    if (mState == STATE_SELECTED) {
+    if (mNeedsReselect) {
+        mNeedsReselect = false;
+        select(folder, pError);
+    }
+    else if (mState == STATE_SELECTED) {
         MCAssert(mCurrentFolder != NULL);
         if (mCurrentFolder->caseInsensitiveCompare(folder) != 0) {
             select(folder, pError);

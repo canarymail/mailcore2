@@ -237,6 +237,7 @@ namespace mailcore {
         virtual void lockConnectionLogger();
         virtual void unlockConnectionLogger();
         virtual ConnectionLogger * connectionLoggerNoLock();
+        virtual void setNeedsReselect();
 
     private:
         String * mHostname;
@@ -281,6 +282,7 @@ namespace mailcore {
         bool mRamblerRuServer;
         bool mHermesServer;
         bool mQipServer;
+        bool mNeedsReselect;
         
         unsigned int mLastFetchedSequenceNumber;
         String * mCurrentFolder;
