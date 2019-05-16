@@ -88,4 +88,20 @@
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->plainTextBodyRendering(stripWhitespace));
 }
 
+- (uint64_t)gmailMessageID {
+    return MCO_NATIVE_INSTANCE->gmailMessageID();
+}
+
+- (void)setGmailMessageID:(uint64_t)gmailMessageID {
+    MCO_NATIVE_INSTANCE->setGmailMessageID(gmailMessageID);
+}
+
+- (uint64_t)gmailThreadID {
+    return MCO_NATIVE_INSTANCE->gmailThreadID();
+}
+
+- (void)setGmailThreadID:(uint64_t)gmailThreadID {
+    MCO_NATIVE_INSTANCE->setGmailThreadID(gmailThreadID);
+}
+
 @end

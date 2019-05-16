@@ -81,6 +81,8 @@ void MessageParser::setBytes(char * dataBytes, unsigned int dataLength)
 MessageParser::MessageParser()
 {
     init();
+    mGmailThreadID = 0;
+    mGmailMessageID = 0;
 }
 
 MessageParser::MessageParser(Data * data)
@@ -89,6 +91,8 @@ MessageParser::MessageParser(Data * data)
     
     setBytes(data->bytes(), data->length());
     mData = (Data *) data->retain();
+    mGmailThreadID = 0;
+    mGmailMessageID = 0;
 }
 
 MessageParser::MessageParser(MessageParser * other) : AbstractMessage(other)
@@ -97,6 +101,8 @@ MessageParser::MessageParser(MessageParser * other) : AbstractMessage(other)
     MC_SAFE_REPLACE_RETAIN(Data, mData, other->mData);
     MC_SAFE_REPLACE_RETAIN(AbstractPart, mMainPart, other->mMainPart);
     setupPartID();
+    mGmailThreadID = 0;
+    mGmailMessageID = 0;
 }
 
 MessageParser::~MessageParser()
@@ -302,6 +308,26 @@ void MessageParser::recursiveSetupPartIDWithMultipart(mailcore::Multipart * part
         }
         recursiveSetupPartIDWithPart(subpart, partID);
     }
+}
+
+void MessageParser::setGmailMessageID(uint64_t msgID)
+{
+    mGmailMessageID = msgID;
+}
+
+uint64_t MessageParser::gmailMessageID()
+{
+    return mGmailMessageID;
+}
+
+void MessageParser::setGmailThreadID(uint64_t threadID)
+{
+    mGmailThreadID = threadID;
+}
+
+uint64_t MessageParser::gmailThreadID()
+{
+    return mGmailThreadID;
 }
 
 static void * createObject()

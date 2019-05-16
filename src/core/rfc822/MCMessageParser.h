@@ -39,6 +39,12 @@ namespace mailcore {
         virtual String * plainTextRendering();
         virtual String * plainTextBodyRendering(bool stripWhitespace);
         
+        virtual void setGmailMessageID(uint64_t msgID);
+        virtual uint64_t gmailMessageID();
+        
+        virtual void setGmailThreadID(uint64_t threadID);
+        virtual uint64_t gmailThreadID();
+        
     public: // subclass behavior
         MessageParser(MessageParser * other);
         virtual String * description();
@@ -59,6 +65,8 @@ namespace mailcore {
     private:
         Data * mData;
         AbstractPart * mMainPart;
+        uint64_t mGmailMessageID;
+        uint64_t mGmailThreadID;
         void init();
 #if __APPLE__
         void * mNSData;

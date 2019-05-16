@@ -22,6 +22,12 @@
 
 @interface MCOMessageParser : MCOAbstractMessage
 
+/** Gmail message ID of the message */
+@property (nonatomic, assign) uint64_t gmailMessageID;
+
+/** Gmail thread ID of the message */
+@property (nonatomic, assign) uint64_t gmailThreadID;
+
 /** returns a parsed message from the given RFC 822 data.*/
 + (MCOMessageParser *) messageParserWithData:(NSData *)data;
 
