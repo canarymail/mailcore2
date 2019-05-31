@@ -991,6 +991,11 @@ void SMTPSession::cancelMessageSending()
     CAN_CANCEL_UNLOCK();
 }
 
+void SMTPSession::setNeedsReconnect()
+{
+    mShouldDisconnect = true;
+}
+
 bool SMTPSession::isDisconnected()
 {
     return mState == STATE_DISCONNECTED;

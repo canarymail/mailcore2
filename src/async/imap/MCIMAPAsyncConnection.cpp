@@ -385,6 +385,11 @@ void IMAPAsyncConnection::setNeedsReselect()
     mSession->setNeedsReselect();
 }
 
+void IMAPAsyncConnection::setNeedsReconnect()
+{
+    mSession->setNeedsReconnect();
+}
+
 void IMAPAsyncConnection::setConnectionLogger(ConnectionLogger * logger)
 {
     pthread_mutex_lock(&mConnectionLoggerLock);

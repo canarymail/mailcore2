@@ -342,3 +342,8 @@ void SMTPAsyncSession::cancelAllOperations()
 {
     mQueue->cancelAllOperations();
 }
+
+void SMTPAsyncSession::setNeedsReconnect()
+{
+    mSession->setNeedsReconnect();
+}

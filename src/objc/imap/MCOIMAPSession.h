@@ -159,6 +159,8 @@
 
 - (void)setNeedsReselect;
 
+- (void)setNeedsReconnect;
+
 /**
  Cancel all operations
  */

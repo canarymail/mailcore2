@@ -238,6 +238,7 @@ namespace mailcore {
         virtual void unlockConnectionLogger();
         virtual ConnectionLogger * connectionLoggerNoLock();
         virtual void setNeedsReselect();
+        virtual void setNeedsReconnect();
 
     private:
         String * mHostname;

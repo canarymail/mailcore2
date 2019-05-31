@@ -97,6 +97,7 @@ namespace mailcore {
         virtual ConnectionLogger * connectionLogger();
         
         virtual void setNeedsReselect();
+        virtual void setNeedsReconnect();
         
 #ifdef __APPLE__
         virtual void setDispatchQueue(dispatch_queue_t dispatchQueue);

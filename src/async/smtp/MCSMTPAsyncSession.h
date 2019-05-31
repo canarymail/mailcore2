@@ -65,6 +65,7 @@ namespace mailcore {
         virtual OperationQueueCallback * operationQueueCallback();
         virtual bool isOperationQueueRunning();
         virtual void cancelAllOperations();
+        virtual void setNeedsReconnect();
 
         virtual SMTPOperation * loginOperation();
         virtual SMTPOperation * sendMessageOperation(Data * messageData);

@@ -406,6 +406,14 @@ void IMAPAsyncSession::setNeedsReselect()
     }
 }
 
+void IMAPAsyncSession::setNeedsReconnect()
+{
+    for (unsigned int i = 0 ; i < mSessions->count() ; i ++) {
+        IMAPAsyncConnection * s = (IMAPAsyncConnection *) mSessions->objectAtIndex(i);
+        s->setNeedsReconnect();
+    }
+}
+
 IMAPFolderInfoOperation * IMAPAsyncSession::folderInfoOperation(String * folder)
 {
     IMAPFolderInfoOperation * op = new IMAPFolderInfoOperation();

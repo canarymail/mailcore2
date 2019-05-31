@@ -1091,6 +1091,11 @@ void IMAPSession::setNeedsReselect()
     mNeedsReselect = true;
 }
 
+void IMAPSession::setNeedsReconnect()
+{
+    mShouldDisconnect = true;
+}
+
 void IMAPSession::selectIfNeeded(String * folder, ErrorCode * pError)
 {
     loginIfNeeded(pError);

@@ -112,6 +112,8 @@
  */
 - (void) cancelAllOperations;
 
+- (void) setNeedsReconnect;
+
 /** @name Operations */
 
 /**

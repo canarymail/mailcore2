@@ -230,4 +230,9 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     return _session->isOperationQueueRunning();
 }
 
+- (void) setNeedsReconnect
+{
+    MCO_NATIVE_INSTANCE->setNeedsReconnect();
+}
+
 @end

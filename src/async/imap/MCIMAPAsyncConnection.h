@@ -125,6 +125,7 @@ namespace mailcore {
         virtual void queueStoppedRunning();
         
         virtual void setNeedsReselect();
+        virtual void setNeedsReconnect();
         
         virtual void setOwner(IMAPAsyncSession * owner);
         virtual IMAPAsyncSession * owner();
