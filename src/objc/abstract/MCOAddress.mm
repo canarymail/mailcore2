@@ -16,6 +16,8 @@
 #include "NSObject+MCO.h"
 #include "NSArray+MCO.h"
 
+#define kNilOrEqual(x, y) (x == y || [x isEqual:y])
+
 @implementation MCOAddress {
     mailcore::Address * _nativeAddress;
 }
@@ -171,8 +173,9 @@ MCO_OBJC_SYNTHESIZE_STRING(setMailbox, mailbox)
     }
 
     MCOAddress * other = object;
-    return [[self displayName] isEqualToString:[other displayName]] &&
-        [[self mailbox] isEqualToString:[other mailbox]];
+    
+    return kNilOrEqual([self displayName], [other displayName]) &&
+           kNilOrEqual([self mailbox], [other mailbox]);
 }
 
 @end
