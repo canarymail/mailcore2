@@ -3306,6 +3306,12 @@ IndexSet * IMAPSession::search(String * folder, IMAPSearchKind kind, String * se
             expr = IMAPSearchExpression::searchSpam();
             break;
         }
+        case IMAPSearchKindHeader:
+        {
+            String *header = new String("Message-ID");
+            expr = IMAPSearchExpression::searchHeader(header, searchString);
+            break;
+        }
         default:
         {
             MCAssert(0);
