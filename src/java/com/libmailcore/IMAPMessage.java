@@ -1,5 +1,5 @@
 package com.libmailcore;
-
+import java.util.HashMap;
 import java.util.List;
 
 /** IMAP messages. */
@@ -111,4 +111,13 @@ public class IMAPMessage extends AbstractMessage {
     private static final long serialVersionUID = 1L;
     
     private native void setupNative();
+    
+    private native void importSerializable(HashMap hashMap);
+
+    private native HashMap serializable();
+
+    public IMAPMessage(HashMap hashMap){
+        setupNative();
+        importSerializable(hashMap);
+    }
 }
