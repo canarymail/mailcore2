@@ -107,7 +107,7 @@ INITIALIZE(IMAPSEssion)
     pool->release();
 }
 
-#define MAX_IDLE_DELAY (28 * 60)
+#define MAX_IDLE_DELAY (9 * 60)
 
 #define LOCK() pthread_mutex_lock(&mIdleLock)
 #define UNLOCK() pthread_mutex_unlock(&mIdleLock)
@@ -3652,6 +3652,8 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
 {
     int r;
     
+    setNeedsReselect();
+
     // connection thread
     selectIfNeeded(folder, pError);
     if (* pError != ErrorNone)
@@ -3704,6 +3706,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
                 return;
             }
             case MAILSTREAM_IDLE_INTERRUPTED:
+                * pError = ErrorIdleInterrupted;
                 MCLog("interrupted by user");
                 break;
             case MAILSTREAM_IDLE_HASDATA:
