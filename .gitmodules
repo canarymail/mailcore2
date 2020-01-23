@@ -1,0 +1,3 @@
+[submodule "build-mac/libetpan"]
+	path = build-mac/libetpan
+	url = https://github.com/canarymail/libetpan.git
