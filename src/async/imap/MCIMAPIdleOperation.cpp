@@ -79,6 +79,7 @@ void IMAPIdleOperation::main()
     performMethodOnCallbackThread((Object::Method) &IMAPIdleOperation::prepare, NULL, true);
     
     if (!mSetupSuccess) {
+        setError(ErrorIdleSetupFailure);
         return;
     }
     

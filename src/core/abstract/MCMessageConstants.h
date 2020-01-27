@@ -267,6 +267,7 @@ namespace mailcore {
         ErrorCancelled,
         ErrorFolderState,
         ErrorIdleInterrupted,
+        ErrorIdleSetupFailure,
     };
     
     enum PartType {

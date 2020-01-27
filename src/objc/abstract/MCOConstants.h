@@ -442,6 +442,8 @@ typedef NS_ENUM(NSInteger, MCOErrorCode) {
     MCOErrorFolderState,
     /** Idle interrupted */
     MCOErrorIdleInterrupted,
+    /** Idle failed to setup */
+    MCOErrorIdleSetupFailure,
     /** The count of all errors */
     MCOErrorCodeCount,
 };
