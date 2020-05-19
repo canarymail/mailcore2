@@ -198,6 +198,8 @@
 
 - (MCOSMTPOperation *) disconnectOperation;
 
+- (unsigned long) maxMessageSize;
+
 @end
 
 #endif

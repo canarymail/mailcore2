@@ -66,6 +66,7 @@ namespace mailcore {
         virtual bool isOperationQueueRunning();
         virtual void cancelAllOperations();
         virtual void setNeedsReconnect();
+        virtual unsigned long maxMessageSize();
 
         virtual SMTPOperation * loginOperation();
         virtual SMTPOperation * sendMessageOperation(Data * messageData);

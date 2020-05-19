@@ -996,6 +996,11 @@ void SMTPSession::setNeedsReconnect()
     mShouldDisconnect = true;
 }
 
+unsigned long SMTPSession::maxMessageSize()
+{
+    return mSmtp->smtp_max_msg_size;
+}
+
 bool SMTPSession::isDisconnected()
 {
     return mState == STATE_DISCONNECTED;

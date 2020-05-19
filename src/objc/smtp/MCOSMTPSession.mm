@@ -235,4 +235,9 @@ MCO_OBJC_SYNTHESIZE_SCALAR(dispatch_queue_t, dispatch_queue_t, setDispatchQueue,
     MCO_NATIVE_INSTANCE->setNeedsReconnect();
 }
 
+- (unsigned long) maxMessageSize
+{
+    return MCO_NATIVE_INSTANCE->maxMessageSize();
+}
+
 @end

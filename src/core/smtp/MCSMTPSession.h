@@ -75,6 +75,7 @@ namespace mailcore {
         virtual ConnectionLogger * connectionLogger();
         
         virtual void noop(ErrorCode * pError);
+        virtual unsigned long maxMessageSize();
         
     public: // private
         virtual void lockConnectionLogger();

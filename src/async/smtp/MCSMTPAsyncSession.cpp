@@ -347,3 +347,8 @@ void SMTPAsyncSession::setNeedsReconnect()
 {
     mSession->setNeedsReconnect();
 }
+
+unsigned long SMTPAsyncSession::maxMessageSize()
+{
+    return mSession->maxMessageSize();
+}
