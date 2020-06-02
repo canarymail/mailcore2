@@ -100,7 +100,10 @@ void IMAPOperation::setError(ErrorCode error)
 }
 
 ErrorCode IMAPOperation::error()
-{
+{    
+    if (isCancelled()) {
+        return ErrorCancelled;
+    }
     return mError;
 }
 

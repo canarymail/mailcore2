@@ -177,9 +177,6 @@ void OperationQueue::callbackOnMainThread(Operation * op)
 {
     op->afterMain();
     
-    if (op->isCancelled())
-        return;
-    
     if (op->callback() != NULL) {
         op->callback()->operationFinished(op);
     }
