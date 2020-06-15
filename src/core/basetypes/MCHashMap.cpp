@@ -132,6 +132,10 @@ unsigned int HashMap::count()
 
 void HashMap::setObjectForKey(Object * key, Object * value)
 {
+    if (key == NULL || value == NULL) {
+        return;
+    }
+
     unsigned int func, indx;
     HashMapIter * iter, * cell;
 
