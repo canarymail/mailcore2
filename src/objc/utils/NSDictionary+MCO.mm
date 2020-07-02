@@ -28,7 +28,9 @@
         mailcore::Object * mcValue = hashmap->objectForKey(mcKey);
         id key = [NSObject mco_objectWithMCObject:mcKey];
         id value = [NSObject mco_objectWithMCObject:mcValue];
-        [result setObject:value forKey:key];
+        if (key && value) {
+            [result setObject:value forKey:key];
+        }
     }
     return result;
 }
@@ -38,7 +40,11 @@
     mailcore::HashMap * result = mailcore::HashMap::hashMap();
     for(NSObject * key in self) {
         NSObject * value = [self objectForKey:key];
-        result->setObjectForKey([key mco_mcObject], [value mco_mcObject]);
+        mailcore::Object * mckey = [key mco_mcObject];
+        mailcore::Object * mcvalue = [value mco_mcObject];
+        if (mckey != nil && mcvalue != nil) {
+            result->setObjectForKey(mckey, mcvalue);
+        }
     }
     return result;
 }

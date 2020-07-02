@@ -101,13 +101,19 @@ static Class classWithTypeInfo(const std::type_info * info)
     }
     else {
         Class aClass = classWithTypeInfo(&typeid(* object));
-        MCAssert(aClass != nil);
-        return [aClass mco_objectWithMCObject:object];
+        if (aClass == nil) {
+            return nil;
+        } else {
+            return [aClass mco_objectWithMCObject:object];
+        }
     }
 #else
     Class aClass = classWithTypeInfo(&typeid(* object));
-    MCAssert(aClass != nil);
-    return [aClass mco_objectWithMCObject:object];
+    if (aClass == nil) {
+        return nil;
+    } else {
+        return [aClass mco_objectWithMCObject:object];
+    }
 #endif
 }
 
