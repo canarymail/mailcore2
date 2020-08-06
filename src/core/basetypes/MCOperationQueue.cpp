@@ -263,7 +263,15 @@ void OperationQueue::startThread()
     mStarted = true;
 
     if (mThreadID != 0) {
+#if __APPLE__
+        static dispatch_queue_t joiningQueue = dispatch_queue_create("io.canary.mailcore.join", DISPATCH_QUEUE_SERIAL);
+        dispatch_async(joiningQueue, ^{
+            // Delay by one runloop since startThread is being called synchronously from another thread
+            pthread_join(mThreadID, NULL);
+        });
+#else
         pthread_join(mThreadID, NULL);
+#endif
     }
 
     pthread_create(&mThreadID, NULL, (void * (*)(void *)) OperationQueue::runOperationsOnThread, this);
