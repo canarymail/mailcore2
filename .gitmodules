@@ -1,3 +1,6 @@
 [submodule "build-mac/libetpan"]
 	path = build-mac/libetpan
 	url = https://github.com/canarymail/libetpan.git
+[submodule "build-mac/ctemplate"]
+	path = build-mac/ctemplate
+	url = https://github.com/dinhvh/ctemplate.git
