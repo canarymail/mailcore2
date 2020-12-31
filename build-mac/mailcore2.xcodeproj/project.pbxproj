@@ -1023,6 +1023,27 @@
 			remoteGlobalIDString = C6BD288C170BD71100A91AC1;
 			remoteInfo = "mailcore osx";
 		};
+		D74063BA259DE7CA0007BF18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6D4FD5019FCB952001F7E01;
+			remoteInfo = ctemplate;
+		};
+		D74063BC259DE7CA0007BF18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6181D2119FCBD1F0088FBBC;
+			remoteInfo = "ctemplate-ios";
+		};
+		D74063CE259DE7DA0007BF18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C6D4FD4F19FCB952001F7E01;
+			remoteInfo = ctemplate;
+		};
 		D7FBE8F523D96428003AB2E7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */;
@@ -2156,6 +2177,7 @@
 		C6F61FB41702AB2F0073032E /* MCOIMAPBaseOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPBaseOperation.mm; sourceTree = "<group>"; };
 		C6F7B19D17A1C15200BE78BB /* MCCertificateUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCCertificateUtils.cpp; sourceTree = "<group>"; };
 		C6F7B19E17A1C15200BE78BB /* MCCertificateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCCertificateUtils.h; sourceTree = "<group>"; };
+		D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ctemplate.xcodeproj; path = "ctemplate/build-mac/ctemplate.xcodeproj"; sourceTree = "<group>"; };
 		D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPReconnectOperation.cpp; sourceTree = "<group>"; };
 		D756420D21A4173E00679B6E /* MCIMAPReconnectOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCIMAPReconnectOperation.h; sourceTree = "<group>"; };
 		D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
@@ -2551,6 +2573,7 @@
 			children = (
 				851682AC1C6A2484005B86C4 /* Default-568h@2x.png */,
 				D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */,
+				D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */,
 				C6BD28A1170BD78E00A91AC1 /* mailcore-framework */,
 				C64EA545169E78B100778456 /* src */,
 				C64EA7A916A00AF400778456 /* tests */,
@@ -3138,6 +3161,15 @@
 			path = security;
 			sourceTree = "<group>";
 		};
+		D74063B6259DE7CA0007BF18 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D74063BB259DE7CA0007BF18 /* libctemplate.a */,
+				D74063BD259DE7CA0007BF18 /* libctemplate-ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D7FBE8EE23D96428003AB2E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3300,6 +3332,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D74063CF259DE7DA0007BF18 /* PBXTargetDependency */,
 				D7FBE8FE23D9644A003AB2E7 /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 osx";
@@ -3431,6 +3464,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = D74063B6259DE7CA0007BF18 /* Products */;
+					ProjectRef = D74063B5259DE7CA0007BF18 /* ctemplate.xcodeproj */;
+				},
+				{
 					ProductGroup = D7FBE8EE23D96428003AB2E7 /* Products */;
 					ProjectRef = D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */;
 				},
@@ -3450,6 +3487,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D74063BB259DE7CA0007BF18 /* libctemplate.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libctemplate.a;
+			remoteRef = D74063BA259DE7CA0007BF18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D74063BD259DE7CA0007BF18 /* libctemplate-ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libctemplate-ios.a";
+			remoteRef = D74063BC259DE7CA0007BF18 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D7FBE8F623D96428003AB2E7 /* libetpan.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -4175,6 +4226,11 @@
 			target = C6BD288C170BD71100A91AC1 /* mailcore osx */;
 			targetProxy = C6BD28B5170C034B00A91AC1 /* PBXContainerItemProxy */;
 		};
+		D74063CF259DE7DA0007BF18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ctemplate;
+			targetProxy = D74063CE259DE7DA0007BF18 /* PBXContainerItemProxy */;
+		};
 		D7FBE8FC23D9643D003AB2E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "libetpan ios";
@@ -4440,8 +4496,9 @@
 		C64EA53C169E772200778456 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = MailCore;
@@ -4453,8 +4510,9 @@
 		C64EA53D169E772200778456 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = MailCore;
