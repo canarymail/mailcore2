@@ -31,4 +31,27 @@ MCO_SYNTHESIZE_NSCODING
 
 MCO_OBJC_SYNTHESIZE_STRING(setPartID, partID)
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCPart:new nativeType()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    [super updateWithDict:dict];
+    if (dict[@"partID"]) {
+        self.partID = dict[@"partID"];
+    }
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
+    if (self.partID) {
+        ret[@"partID"] = self.partID;
+    }
+    return ret;
+}
+
 @end

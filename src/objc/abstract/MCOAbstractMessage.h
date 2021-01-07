@@ -12,6 +12,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MailCore/MCOSerializable.h>
+
 @class MCOMessageHeader;
 @class MCOAbstractPart;
 
@@ -21,7 +23,7 @@ namespace mailcore {
 }
 #endif
 
-@interface MCOAbstractMessage : NSObject <NSCopying>
+@interface MCOAbstractMessage : NSObject <NSCopying, MCOSerializable>
 
 #ifdef __cplusplus
 - (instancetype) initWithMCMessage:(mailcore::AbstractMessage *)message NS_DESIGNATED_INITIALIZER;

@@ -12,11 +12,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MailCore/MCOSerializable.h>
+
 /** This class implements common fields of a message header.*/
 
 @class MCOAddress;
 
-@interface MCOMessageHeader : NSObject <NSCopying, NSCoding>
+@interface MCOMessageHeader : NSObject <NSCopying, NSCoding, MCOSerializable>
 
 /** Message-ID field.*/
 @property (nonatomic, copy) NSString * messageID;

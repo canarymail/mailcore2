@@ -108,4 +108,105 @@ MCO_OBJC_SYNTHESIZE_BOOL(setAttachment, isAttachment)
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->allContentTypeParametersNames());
 }
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCPart:new nativeType()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    self.uniqueID = dict[@"uniqueID"];
+    self.filename = dict[@"filename"];
+    self.mimeType = dict[@"mimeType"];
+    self.charset = dict[@"charset"];
+    self.contentID = dict[@"contentID"];
+    self.contentLocation = dict[@"contentLocation"];
+    self.contentDescription = dict[@"contentDescription"];
+    if ([dict[@"inlineAttachment"] boolValue]) {
+        self.inlineAttachment = YES;
+    }
+    if ([dict[@"attachment"] boolValue]) {
+        self.attachment = YES;
+    }
+    NSString *partType = dict[@"partType"];
+    if (partType) {
+        if ([partType isEqual:@"single"]) {
+            self.partType = MCOPartTypeSingle;
+        }
+        else if ([partType isEqual:@"message"]) {
+            self.partType = MCOPartTypeMessage;
+        }
+        else if ([partType isEqual:@"multipart/mixed"]) {
+            self.partType = MCOPartTypeMultipartMixed;
+        }
+        else if ([partType isEqual:@"multipart/related"]) {
+            self.partType = MCOPartTypeMultipartRelated;
+        }
+        else if ([partType isEqual:@"multipart/alternative"]) {
+            self.partType = MCOPartTypeMultipartAlternative;
+        }
+        else if ([partType isEqual:@"multipart/signed"]) {
+            self.partType = MCOPartTypeMultipartSigned;
+        }
+    }
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    if (self.uniqueID) {
+        ret[@"uniqueID"] = self.uniqueID;
+    }
+    if (self.filename) {
+        ret[@"filename"] = self.filename;
+    }
+    if (self.mimeType) {
+        ret[@"mimeType"] = self.mimeType;
+    }
+    if (self.charset) {
+        ret[@"charset"] = self.charset;
+    }
+    if (self.contentID) {
+        ret[@"contentID"] = self.contentID;
+    }
+    if (self.contentLocation) {
+        ret[@"contentLocation"] = self.contentLocation;
+    }
+    if (self.contentDescription) {
+        ret[@"contentDescription"] = self.contentDescription;
+    }
+    if (self.inlineAttachment) {
+        ret[@"inlineAttachment"] = @(1);
+    }
+    if (self.attachment) {
+        ret[@"attachment"] = @(1);
+    }
+    NSString *partTypeStr;
+    switch (self.partType) {
+        default:
+        case MCOPartTypeSingle:
+            partTypeStr = @"single";
+            break;
+        case MCOPartTypeMessage:
+            partTypeStr = @"message";
+            break;
+        case MCOPartTypeMultipartMixed:
+            partTypeStr = @"multipart/mixed";
+            break;
+        case MCOPartTypeMultipartRelated:
+            partTypeStr = @"multipart/related";
+            break;
+        case MCOPartTypeMultipartAlternative:
+            partTypeStr = @"multipart/alternative";
+            break;
+        case MCOPartTypeMultipartSigned:
+            partTypeStr = @"multipart/signed";
+            break;
+    }
+    if (partTypeStr) {
+        ret[@"partType"] = partTypeStr;
+    }
+    return ret;
+}
+
 @end

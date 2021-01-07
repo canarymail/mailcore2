@@ -26,10 +26,11 @@
 
 #import <MailCore/MCOAbstractMessage.h>
 #import <MailCore/MCOConstants.h>
+#import <MailCore/MCOSerializable.h>
 
 @protocol MCOHTMLRendererIMAPDelegate;
 
-@interface MCOIMAPMessage : MCOAbstractMessage <NSCoding>
+@interface MCOIMAPMessage : MCOAbstractMessage <NSCoding, MCOSerializable>
 
 /** IMAP UID of the message. */
 @property (nonatomic, assign) uint32_t uid;

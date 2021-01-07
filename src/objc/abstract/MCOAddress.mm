@@ -178,6 +178,28 @@ MCO_OBJC_SYNTHESIZE_STRING(setMailbox, mailbox)
            kNilOrEqual([self mailbox], [other mailbox]);
 }
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCAddress:new mailcore::Address()]) {
+        self.displayName = dict[@"displayName"];
+        self.mailbox = dict[@"mailbox"];
+    }
+    return self;
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    
+    if (self.displayName) {
+        ret[@"displayName"] = self.displayName;
+    }
+    
+    if (self.mailbox) {
+        ret[@"mailbox"] = self.mailbox;
+    }
+    
+    return ret;
+}
+
 @end
 
 @implementation NSArray (MCOAddress)

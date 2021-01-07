@@ -29,6 +29,7 @@ namespace mailcore {
         virtual ~MessageParser();
         
         virtual AbstractPart * mainPart();
+        virtual void setMainPart(AbstractPart *mainPart);
         virtual Data * data();
         
         virtual String * htmlRendering(HTMLRendererTemplateCallback * htmlCallback = NULL);

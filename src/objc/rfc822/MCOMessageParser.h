@@ -18,9 +18,11 @@
 
 #import <MailCore/MCOAbstractMessage.h>
 
+#import <MailCore/MCOSerializable.h>
+
 @protocol MCOHTMLRendererDelegate;
 
-@interface MCOMessageParser : MCOAbstractMessage
+@interface MCOMessageParser : MCOAbstractMessage <MCOSerializable>
 
 /** Gmail message ID of the message */
 @property (nonatomic, assign) uint64_t gmailMessageID;

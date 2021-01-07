@@ -14,9 +14,11 @@
 
 #import <MailCore/MCOConstants.h>
 
+#import <MailCore/MCOSerializable.h>
+
 /** Represents a single IMAP message part */
 
-@interface MCOIMAPPart : MCOAbstractPart <NSCoding>
+@interface MCOIMAPPart : MCOAbstractPart <NSCoding, MCOSerializable>
 
 /** A part identifier looks like 1.2.1 */
 @property (nonatomic, copy) NSString * partID;

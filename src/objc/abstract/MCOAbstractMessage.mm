@@ -95,4 +95,24 @@ MCO_OBJC_SYNTHESIZE(MessageHeader, setHeader, header)
     return MCO_OBJC_BRIDGE_GET(requiredPartsForRendering);
 }
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCMessage:new mailcore::AbstractMessage()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    self.header = [[MCOMessageHeader alloc] initWithDict:dict[@"header"]];
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    NSDictionary *header = [self.header toDict];
+    if (header) {
+        ret[@"header"] = header;
+    }
+    return ret;
+}
+
 @end

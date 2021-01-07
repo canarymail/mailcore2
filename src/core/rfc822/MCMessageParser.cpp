@@ -117,6 +117,14 @@ AbstractPart * MessageParser::mainPart()
     return mMainPart;
 }
 
+void MessageParser::setMainPart(AbstractPart *mainPart) {
+    mMainPart = mainPart;
+    if (mMainPart != NULL) {
+        mMainPart->applyUniquePartID();
+    }
+    setupPartID();
+}
+
 Data * MessageParser::data()
 {
 #if __APPLE__

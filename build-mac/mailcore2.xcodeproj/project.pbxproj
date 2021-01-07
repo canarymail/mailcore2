@@ -958,6 +958,9 @@
 		C6F7B1A017A1C15200BE78BB /* MCCertificateUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B19D17A1C15200BE78BB /* MCCertificateUtils.cpp */; };
 		D756420E21A4173E00679B6E /* MCIMAPReconnectOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */; };
 		D756420F21A4173E00679B6E /* MCIMAPReconnectOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */; };
+		D7CBA0A325A6DEC400FDA964 /* MCOSerializable.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7CBA09625A6DD9D00FDA964 /* MCOSerializable.h */; };
+		D7CBA0AD25A71BA600FDA964 /* MCOSerializable.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */; };
+		D7CBA0AE25A71BA600FDA964 /* MCOSerializable.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */; };
 		DA0F1C7B177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0F1C79177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp */; };
 		DA0F1C7C177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA0F1C79177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp */; };
 		DA89896D178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA89896C178A47D200F6D90A /* MCOIMAPMessageRenderingOperation.mm */; };
@@ -1121,6 +1124,7 @@
 				84B639F417F2839C003B5BA2 /* MCIMAPNoopOperation.h in CopyFiles */,
 				84D7377B199C00F5005124E5 /* MCONNTP.h in CopyFiles */,
 				84B639F517F2839C003B5BA2 /* MCPOPNoopOperation.h in CopyFiles */,
+				D7CBA0A325A6DEC400FDA964 /* MCOSerializable.h in CopyFiles */,
 				84D7374B199BFB94005124E5 /* MCAsyncNNTP.h in CopyFiles */,
 				84D7377E199C0100005124E5 /* MCONNTPSession.h in CopyFiles */,
 				84B639F617F2839C003B5BA2 /* MCSMTPNoopOperation.h in CopyFiles */,
@@ -2180,6 +2184,8 @@
 		D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPReconnectOperation.cpp; sourceTree = "<group>"; };
 		D756420D21A4173E00679B6E /* MCIMAPReconnectOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCIMAPReconnectOperation.h; sourceTree = "<group>"; };
 		D773AC7325A1C5B20011D019 /* ctemplate.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ctemplate.xcodeproj; path = "ctemplate/build-mac/ctemplate.xcodeproj"; sourceTree = "<group>"; };
+		D7CBA09625A6DD9D00FDA964 /* MCOSerializable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCOSerializable.h; sourceTree = "<group>"; };
+		D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCOSerializable.m; sourceTree = "<group>"; };
 		D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libetpan.xcodeproj; path = "libetpan/build-mac/libetpan.xcodeproj"; sourceTree = "<group>"; };
 		DA0F1C79177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MCIMAPMessageRenderingOperation.cpp; sourceTree = "<group>"; };
 		DA0F1C7A177C07B300F0D3B4 /* MCIMAPMessageRenderingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCIMAPMessageRenderingOperation.h; sourceTree = "<group>"; };
@@ -3081,6 +3087,8 @@
 				C69BA85A17DEFCCB00D601B7 /* NSIndexSet+MCO.m */,
 				C643F490189A3D59007EA2F7 /* NSSet+MCO.h */,
 				C643F491189A3D59007EA2F7 /* NSSet+MCO.mm */,
+				D7CBA09625A6DD9D00FDA964 /* MCOSerializable.h */,
+				D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -3718,6 +3726,7 @@
 				C64EA7F816A15A7800778456 /* MCIMAPCheckAccountOperation.cpp in Sources */,
 				943F1A9A17D964F600F0C798 /* MCIMAPConnectOperation.cpp in Sources */,
 				C64EA7FC16A2959800778456 /* MCIMAPFetchFoldersOperation.cpp in Sources */,
+				D7CBA0AD25A71BA600FDA964 /* MCOSerializable.m in Sources */,
 				C64EA80216A295E400778456 /* MCIMAPRenameFolderOperation.cpp in Sources */,
 				C64EA80516A2997E00778456 /* MCIMAPDeleteFolderOperation.cpp in Sources */,
 				BD49963719FEC6DD000945BC /* ConvertUTF.c in Sources */,
@@ -4002,6 +4011,7 @@
 				C6BA2BC31705F4E6003F0E9E /* MCIMAPOperation.cpp in Sources */,
 				C6BA2BC41705F4E6003F0E9E /* MCIMAPCheckAccountOperation.cpp in Sources */,
 				943F1A9E17D96C5500F0C798 /* MCIMAPConnectOperation.cpp in Sources */,
+				D7CBA0AE25A71BA600FDA964 /* MCOSerializable.m in Sources */,
 				C6BA2BC51705F4E6003F0E9E /* MCIMAPFetchFoldersOperation.cpp in Sources */,
 				C6BA2BC61705F4E6003F0E9E /* MCIMAPRenameFolderOperation.cpp in Sources */,
 				BD49963819FEC6DD000945BC /* ConvertUTF.c in Sources */,

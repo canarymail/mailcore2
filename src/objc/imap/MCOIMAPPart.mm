@@ -38,4 +38,31 @@ MCO_OBJC_SYNTHESIZE_SCALAR(MCOEncoding, mailcore::Encoding, setEncoding, encodin
     return MCO_NATIVE_INSTANCE->decodedSize();
 }
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCPart:new nativeType()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    [super updateWithDict:dict];
+    if (dict[@"partID"]) {
+        self.partID = dict[@"partID"];
+    }
+    self.encoding = (MCOEncoding)[dict[@"encoding"] integerValue];
+    self.size = [dict[@"size"] unsignedIntValue];
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
+    if (self.partID) {
+        ret[@"partID"] = self.partID;
+    }
+    ret[@"encoding"] = @(self.encoding);
+    ret[@"size"] = @(self.size);
+    return ret;
+}
+
 @end

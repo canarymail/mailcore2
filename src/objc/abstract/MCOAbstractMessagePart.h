@@ -13,6 +13,8 @@
 #import <Foundation/Foundation.h>
 #import <MailCore/MCOAbstractPart.h>
 
+#import <MailCore/MCOSerializable.h>
+
 @class MCOMessageHeader;
 
 @interface MCOAbstractMessagePart : MCOAbstractPart
