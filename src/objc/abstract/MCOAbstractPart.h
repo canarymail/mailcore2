@@ -12,6 +12,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <MailCore/MCOSerializable.h>
+
 @class MCOAbstractMessage;
 
 typedef NS_ENUM(NSInteger, MCOPartType) {
@@ -47,7 +49,7 @@ namespace mailcore {
 }
 #endif
 
-@interface MCOAbstractPart : NSObject <NSCopying>
+@interface MCOAbstractPart : NSObject <NSCopying, MCOSerializable>
 
 #ifdef __cplusplus
 - (instancetype) initWithMCPart:(mailcore::AbstractPart *)part NS_DESIGNATED_INITIALIZER;

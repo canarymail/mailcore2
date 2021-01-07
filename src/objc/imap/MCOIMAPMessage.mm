@@ -67,6 +67,77 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
     return result;
 }
 
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCMessage:new mailcore::IMAPMessage()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    if (dict[@"modSeqValue"]) {
+        self.modSeqValue = [dict[@"modSeqValue"] unsignedLongLongValue];
+    }
+    if (dict[@"uid"]) {
+        self.uid = [dict[@"uid"] unsignedIntValue];
+    }
+    if (dict[@"size"]) {
+        self.size = [dict[@"size"] unsignedIntValue];
+    }
+    if (dict[@"flags"]) {
+        self.flags = [dict[@"flags"] unsignedIntValue];
+    }
+    if (dict[@"originalFlags"]) {
+        self.originalFlags = [dict[@"originalFlags"] unsignedIntValue];
+    }
+    if (dict[@"customFlags"]) {
+        self.customFlags = dict[@"customFlags"];
+    }
+    if (dict[@"mainPart"]) {
+        Class<MCOSerializable> klass = NSClassFromString(dict[@"class"]);
+        id instance = [[klass alloc] initWithDict:dict];
+        self.mainPart = instance;
+    }
+    if (dict[@"gmailLabels"]) {
+        self.gmailLabels = dict[@"gmailLabels"];
+    }
+    if (dict[@"gmailMessageID"]) {
+        self.gmailMessageID = [dict[@"gmailMessageID"] unsignedLongLongValue];
+    }
+    if (dict[@"gmailThreadID"]) {
+        self.gmailThreadID = [dict[@"gmailThreadID"] unsignedLongLongValue];
+    }
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
+    ret[@"modseqValue"] = @(self.modSeqValue);
+    ret[@"uid"] = @(self.uid);
+    ret[@"size"] = @(self.size);
+    ret[@"flags"] = @(self.flags);
+    ret[@"originalFlags"] = @(self.originalFlags);
+    if (self.customFlags.count > 0) {
+        ret[@"customFlags"] = self.customFlags;
+    }
+    if (self.mainPart) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setObject:NSStringFromClass([self.mainPart class]) forKey:@"class"];
+        [dict addEntriesFromDictionary:[self.mainPart toDict]];
+        ret[@"mainPart"] = dict;
+    }
+    if (self.gmailLabels) {
+        ret[@"gmailLabels"] = self.gmailLabels;
+    }
+    if (self.gmailMessageID) {
+        ret[@"gmailMessageID"] = @(self.gmailMessageID);
+    }
+    if (self.gmailThreadID) {
+        ret[@"gmailThreadID"] = @(self.gmailThreadID);
+    }
+    return ret;
+}
+
 - (instancetype) initWithSerializableDictionary:(NSDictionary *)dict {
     mailcore::HashMap * serializable = MCO_FROM_OBJC(mailcore::HashMap, dict);
     self = MCO_TO_OBJC(mailcore::Object::objectWithSerializable(serializable));

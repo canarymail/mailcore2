@@ -12,8 +12,9 @@
 
 #import <Foundation/Foundation.h>
 #import <MailCore/MCOAbstractPart.h>
+#import <MailCore/MCOSerializable.h>
 
-@interface MCOAbstractMultipart : MCOAbstractPart
+@interface MCOAbstractMultipart : MCOAbstractPart <MCOSerializable>
 
 /** Returns the subparts of that multipart.*/
 @property (nonatomic, copy) NSArray * /* MCOAbstractPart */ parts;

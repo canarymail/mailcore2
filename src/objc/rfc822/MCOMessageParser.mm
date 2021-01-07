@@ -10,6 +10,7 @@
 
 #include "MCRFC822.h"
 #include "MCRenderer.h"
+#include "MCAbstractPart.h"
 
 #import "MCOHTMLRendererDelegate.h"
 #import "NSObject+MCO.h"
@@ -52,6 +53,10 @@
 - (MCOAbstractPart *) mainPart
 {
     return MCO_OBJC_BRIDGE_GET(mainPart);
+}
+
+- (void) setMainPart:(MCOAbstractPart *) mainPart {
+    MCO_OBJC_BRIDGE_SET(setMainPart, mailcore::AbstractPart, mainPart);
 }
 
 - (NSData *) data
@@ -102,6 +107,29 @@
 
 - (void)setGmailThreadID:(uint64_t)gmailThreadID {
     MCO_NATIVE_INSTANCE->setGmailThreadID(gmailThreadID);
+}
+
+- (instancetype)initWithDict:(NSDictionary *)dict {
+    if (self = [self initWithMCMessage:new nativeType()]) {
+        [self updateWithDict:dict];
+    }
+    return self;
+}
+
+- (void)updateWithDict:(NSDictionary *)dict {
+    [super updateWithDict:dict];
+    if (dict[@"mainPart"]) {
+        [self setMainPart:(id)[MCOSerializableUtils objectFromDict:dict[@"mainPart"]]];
+    }
+}
+
+- (NSDictionary *)toDict {
+    NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
+    if (self.mainPart) {
+        ret[@"mainPart"] = [MCOSerializableUtils dictFromObject:(id)self.mainPart];
+    }
+    return ret;
 }
 
 @end

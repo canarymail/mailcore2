@@ -12,6 +12,8 @@
 
 #import "MCOUtils.h"
 
+#import "MCOIMAPNamespaceItem.h"
+
 @implementation MCOIMAPNamespace {
     mailcore::IMAPNamespace * _nativeNamespace;
 }
