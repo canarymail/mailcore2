@@ -186,7 +186,10 @@ MCO_OBJC_SYNTHESIZE_STRING(setUserAgent, userAgent)
         self.inReplyTo = dict[@"inReplyTo"];
     }
     if (dict[@"sender"]) {
-        self.sender = [[MCOAddress alloc] initWithDict:dict[@"messageID"]];
+        self.sender = [[MCOAddress alloc] initWithDict:dict[@"sender"]];
+    }
+    if (dict[@"from"]) {
+        self.from = [[MCOAddress alloc] initWithDict:dict[@"from"]];
     }
     if (dict[@"to"]) {
         self.to = [NSArray fromSerialized:dict[@"to"]];

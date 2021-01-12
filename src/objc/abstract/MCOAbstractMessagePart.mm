@@ -31,7 +31,7 @@ MCO_OBJC_SYNTHESIZE(AbstractMessagePart, setMainPart, mainPart)
 - (void)updateWithDict:(NSDictionary *)dict {
     [super updateWithDict:dict];
     if (dict[@"mainPart"]) {
-        self.mainPart = [[MCOAbstractPart alloc] initWithDict:dict[@"mainPart"]];
+        self.mainPart = (id)[MCOSerializableUtils objectFromDict:dict[@"mainPart"]];
     }
     if (dict[@"header"]) {
         self.header = [[MCOMessageHeader alloc] initWithDict:dict[@"header"]];
@@ -40,9 +40,10 @@ MCO_OBJC_SYNTHESIZE(AbstractMessagePart, setMainPart, mainPart)
 
 - (NSDictionary *)toDict {
     NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
     
     if (self.mainPart) {
-        ret[@"mainPart"] = [self.mainPart toDict];
+        ret[@"mainPart"] = [MCOSerializableUtils dictFromObject:self.mainPart];
     }
     if (self.header) {
         ret[@"header"] = [self.header toDict];

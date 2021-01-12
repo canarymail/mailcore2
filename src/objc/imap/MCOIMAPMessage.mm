@@ -68,13 +68,14 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
 }
 
 - (instancetype)initWithDict:(NSDictionary *)dict {
-    if (self = [self initWithMCMessage:new mailcore::IMAPMessage()]) {
+    if (self = [self initWithMCMessage:new nativeType()]) {
         [self updateWithDict:dict];
     }
     return self;
 }
 
 - (void)updateWithDict:(NSDictionary *)dict {
+    [super updateWithDict:dict];
     if (dict[@"modSeqValue"]) {
         self.modSeqValue = [dict[@"modSeqValue"] unsignedLongLongValue];
     }
@@ -94,9 +95,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
         self.customFlags = dict[@"customFlags"];
     }
     if (dict[@"mainPart"]) {
-        Class<MCOSerializable> klass = NSClassFromString(dict[@"class"]);
-        id instance = [[klass alloc] initWithDict:dict];
-        self.mainPart = instance;
+        self.mainPart = (id)[MCOSerializableUtils objectFromDict:dict[@"mainPart"]];
     }
     if (dict[@"gmailLabels"]) {
         self.gmailLabels = dict[@"gmailLabels"];
@@ -112,7 +111,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
 - (NSDictionary *)toDict {
     NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
     [ret addEntriesFromDictionary:[super toDict]];
-    ret[@"modseqValue"] = @(self.modSeqValue);
+    ret[@"modSeqValue"] = @(self.modSeqValue);
     ret[@"uid"] = @(self.uid);
     ret[@"size"] = @(self.size);
     ret[@"flags"] = @(self.flags);
@@ -121,10 +120,7 @@ MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID
         ret[@"customFlags"] = self.customFlags;
     }
     if (self.mainPart) {
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setObject:NSStringFromClass([self.mainPart class]) forKey:@"class"];
-        [dict addEntriesFromDictionary:[self.mainPart toDict]];
-        ret[@"mainPart"] = dict;
+        ret[@"mainPart"] = [MCOSerializableUtils dictFromObject:(id)self.mainPart];
     }
     if (self.gmailLabels) {
         ret[@"gmailLabels"] = self.gmailLabels;

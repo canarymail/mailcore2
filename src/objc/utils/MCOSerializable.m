@@ -13,7 +13,8 @@
 @implementation MCOSerializableUtils
 
 + (id<MCOSerializable>)objectFromDict:(NSDictionary *)dict {
-    Class<MCOSerializable> klass = dict[@"class"];
+    NSString *classStr = dict[@"class"];
+    Class<MCOSerializable> klass = NSClassFromString(classStr);
     id item = [[klass alloc] initWithDict:dict];
     return item;
 }

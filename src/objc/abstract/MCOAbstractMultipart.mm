@@ -26,6 +26,7 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setParts, parts)
 }
 
 - (void)updateWithDict:(NSDictionary *)dict {
+    [super updateWithDict:dict];
     if (dict[@"parts"]) {
         self.parts = [NSArray fromSerialized:dict[@"parts"]];
     }
@@ -33,6 +34,7 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setParts, parts)
 
 - (NSDictionary *)toDict {
     NSMutableDictionary *ret = [[NSMutableDictionary alloc] init];
+    [ret addEntriesFromDictionary:[super toDict]];
 
     NSArray *parts = self.parts.toSerialized;
     if (parts.count > 0) {
