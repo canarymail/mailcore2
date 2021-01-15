@@ -958,6 +958,7 @@
 		C6F7B1A017A1C15200BE78BB /* MCCertificateUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F7B19D17A1C15200BE78BB /* MCCertificateUtils.cpp */; };
 		D756420E21A4173E00679B6E /* MCIMAPReconnectOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */; };
 		D756420F21A4173E00679B6E /* MCIMAPReconnectOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D756420C21A4173E00679B6E /* MCIMAPReconnectOperation.cpp */; };
+		D79600A225B16A8500868DE6 /* MCOSerializable.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7CBA09625A6DD9D00FDA964 /* MCOSerializable.h */; };
 		D7CBA0A325A6DEC400FDA964 /* MCOSerializable.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7CBA09625A6DD9D00FDA964 /* MCOSerializable.h */; };
 		D7CBA0AD25A71BA600FDA964 /* MCOSerializable.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */; };
 		D7CBA0AE25A71BA600FDA964 /* MCOSerializable.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CBA0AC25A71BA500FDA964 /* MCOSerializable.m */; };
@@ -1342,6 +1343,7 @@
 			dstPath = include/MailCore;
 			dstSubfolderSpec = 16;
 			files = (
+				D79600A225B16A8500868DE6 /* MCOSerializable.h in CopyFiles */,
 				F38221A61C7B62E900E00721 /* MCONNTPPostOperation.h in CopyFiles */,
 				F38221A51C7B629B00E00721 /* MCNNTPPostOperation.h in CopyFiles */,
 				817FA52A1C69038F006146BD /* MCOIMAPFetchContentToFileOperation.h in CopyFiles */,
