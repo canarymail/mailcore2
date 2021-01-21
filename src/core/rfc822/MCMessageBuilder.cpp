@@ -907,11 +907,14 @@ static struct mailmime * get_pgp_version_part(void)
 {
     struct mailmime * mime;
     struct mailmime_content * content;
+    struct mailmime_disposition * disposition;
+    disposition = mailmime_disposition_new_with_data(MAILMIME_DISPOSITION_TYPE_ATTACHMENT,
+                                                     strdup("version.asc"), NULL, NULL, NULL, (size_t) -1);
     
     content = mailmime_content_new_with_str("application/pgp-encrypted");
-    struct mailmime_fields * mime_fields = mailmime_fields_new_empty();
+    struct mailmime_fields * mime_fields = mailmime_fields_new_with_data(NULL, NULL, NULL, disposition, NULL);
     mime = part_new_empty(NULL, content, mime_fields, NULL, 1);
-    const char * version = "Version: 1\r\n";
+    const char * version = "Version: 3.0\r\n";
     mailmime_set_body_text(mime, (char *) version, strlen(version));
     
     return mime;
