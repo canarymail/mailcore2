@@ -332,9 +332,11 @@ static void attachmentsForAbstractMultipartAlternative(AbstractMultipart * part,
 
 static void attachmentsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context)
 {
-    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
-        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
-        attachmentsForAbstractPart(subpart, context);
+    if (part != NULL && part->parts() != NULL) {
+        for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            attachmentsForAbstractPart(subpart, context);
+        }
     }
 }
 
