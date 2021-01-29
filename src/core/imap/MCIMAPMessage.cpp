@@ -226,6 +226,9 @@ static AbstractPart * partForPartIDInMessagePart(AbstractMessagePart * part, Str
 
 static AbstractPart * partForPartIDInMultipart(AbstractMultipart * part, String * partID)
 {
+    if (part == NULL || part->parts() == NULL) {
+        return NULL;
+    }
     for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
         mailcore::AbstractPart * subpart = (mailcore::AbstractPart *) part->parts()->objectAtIndex(i);
         mailcore::AbstractPart * result = partForPartIDInPart(subpart, partID);

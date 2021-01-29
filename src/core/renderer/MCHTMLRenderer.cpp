@@ -123,6 +123,9 @@ static AbstractPart * preferredPartInMultipartAlternative(AbstractMultipart * pa
     int htmlPart = -1;
     int textPart = -1;
     
+    if (part == NULL || part->parts() == NULL) {
+        return NULL;
+    }
     for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
         AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
         if (partContainsMimeType(subpart, MCSTR("text/html"))) {
@@ -170,6 +173,9 @@ static bool singlePartContainsMimeType(AbstractPart * part, String * mimeType)
 
 static bool multipartContainsMimeType(AbstractMultipart * part, String * mimeType)
 {
+    if (part == NULL || part->parts() == NULL) {
+        return NULL;
+    }
     for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
         AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
         if (partContainsMimeType(subpart, mimeType)) {
@@ -318,12 +324,15 @@ static void attachmentsForAbstractMultipartAlternative(AbstractMultipart * part,
         return;
 
     AbstractPart * calendar = NULL;
-    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
-        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
-        if (partContainsMimeType(subpart, MCSTR("text/calendar"))) {
-            calendar = subpart;
+    if (part != NULL && part->parts() != NULL) {
+        for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            if (partContainsMimeType(subpart, MCSTR("text/calendar"))) {
+                calendar = subpart;
+            }
         }
     }
+    
     attachmentsForAbstractPart(preferredAlternative, context);
     if (calendar != NULL) {
         attachmentsForAbstractPart(calendar, context);
@@ -342,6 +351,9 @@ static void attachmentsForAbstractMultipartMixed(AbstractMultipart * part, htmlR
 
 static void attachmentsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context)
 {
+    if (part == NULL || part->parts() == NULL) {
+        return;
+    }
     if (part->parts()->count() == 0) {
         return;
     }
@@ -443,7 +455,13 @@ static void partsForAbstractMessagePart(AbstractMessagePart * part, htmlRenderer
 
 static void partsForAbstractMultipartAlternative(AbstractMultipart * part, htmlRendererContext * context)
 {
+    if (part == NULL) {
+        return;
+    }
     context->parts->addObject(part);
+    if (part->parts() == NULL) {
+        return;
+    }
     for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
         AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
         partsForAbstractPart(subpart, context);
@@ -452,7 +470,13 @@ static void partsForAbstractMultipartAlternative(AbstractMultipart * part, htmlR
 
 static void partsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context)
 {
+    if (part == NULL) {
+        return;
+    }
     context->parts->addObject(part);
+    if (part->parts() == NULL) {
+        return;
+    }
     for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
         AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
         partsForAbstractPart(subpart, context);
@@ -461,8 +485,11 @@ static void partsForAbstractMultipartMixed(AbstractMultipart * part, htmlRendere
 
 static void partsForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context)
 {
+    if (part == NULL) {
+        return;
+    }
     context->parts->addObject(part);
-    if (part->parts()->count() == 0) {
+    if (part->parts() == NULL || part->parts()->count() == 0) {
         return;
     }
     AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(0);
@@ -760,10 +787,12 @@ String * htmlForAbstractMultipartAlternative(AbstractMultipart * part, htmlRende
 
     // Exchange sends calendar invitation as alternative part. We need to extract it.
     AbstractPart * calendar = NULL;
-    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
-        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
-        if (partContainsMimeType(subpart, MCSTR("text/calendar"))) {
-            calendar = subpart;
+    if (part != NULL && part->parts() != NULL) {
+        for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            if (partContainsMimeType(subpart, MCSTR("text/calendar"))) {
+                calendar = subpart;
+            }
         }
     }
 
@@ -783,14 +812,16 @@ String * htmlForAbstractMultipartAlternative(AbstractMultipart * part, htmlRende
 static String * htmlForAbstractMultipartMixed(AbstractMultipart * part, htmlRendererContext * context)
 {
     String * result = String::string();
-    for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
-        AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
-        String * substring = htmlForAbstractPart(subpart, context);
-        if (context->pass != 0) {
-            if (substring == NULL)
-                return NULL;
-            
-            result->appendString(substring);
+    if (part != NULL && part->parts() != NULL) {
+        for(unsigned int i = 0 ; i < part->parts()->count() ; i ++) {
+            AbstractPart * subpart = (AbstractPart *) part->parts()->objectAtIndex(i);
+            String * substring = htmlForAbstractPart(subpart, context);
+            if (context->pass != 0) {
+                if (substring == NULL)
+                    return NULL;
+                
+                result->appendString(substring);
+            }
         }
     }
     return  result;
@@ -798,7 +829,7 @@ static String * htmlForAbstractMultipartMixed(AbstractMultipart * part, htmlRend
 
 static String * htmlForAbstractMultipartRelated(AbstractMultipart * part, htmlRendererContext * context)
 {
-    if (part->parts()->count() == 0) {
+    if (part == NULL || part->parts() == NULL || part->parts()->count() == 0) {
         if (context->pass == 0) {
             return NULL;
         }
