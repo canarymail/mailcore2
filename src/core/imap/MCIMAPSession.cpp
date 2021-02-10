@@ -682,6 +682,13 @@ void IMAPSession::connect(ErrorCode * pError)
             * pError = ErrorTLSNotAvailable;
             goto close;
         }
+            
+        mIsCertificateValid = checkCertificate();
+        if (isCheckCertificateEnabled() && !mIsCertificateValid) {
+            * pError = ErrorCertificate;
+            goto close;
+        }
+            
         break;
 
         case ConnectionTypeTLS:
