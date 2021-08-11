@@ -6,3 +6,6 @@
 	url = https://github.com/canarymail/ctemplate.git
 [submodule "ctemplate"]
 	url = https://github.com/canarymail/ctemplate.git
+[submodule "build-mac/tidy-html5"]
+	path = build-mac/tidy-html5
+	url = https://github.com/canarymail/tidy-html5.git

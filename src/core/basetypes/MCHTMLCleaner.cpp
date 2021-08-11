@@ -15,8 +15,13 @@
 typedef unsigned long ulong;
 #endif
 
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#include <tidy/tidy.h>
+#include <tidy/buffio.h>
+#else
 #include <tidy.h>
 #include <buffio.h>
+#endif
 
 #include "MCUtils.h"
 #include "MCLog.h"

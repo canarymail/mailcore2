@@ -982,6 +982,7 @@
 		F38221A81C7B63E500E00721 /* MCONNTPPostOperation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F38221A11C7AAD8100E00721 /* MCONNTPPostOperation.h */; };
 		F87F190C16BB62B00012652F /* MCOIMAPFetchFoldersOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = F87F190B16BB62B00012652F /* MCOIMAPFetchFoldersOperation.mm */; };
 		F8EA941716BB1C9D0011AC6F /* MCOIMAPSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F8EA941416BAED6E0011AC6F /* MCOIMAPSession.h */; };
+		FC1AC64726C3B896007C75EC /* libtidy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC1AC64426C3B762007C75EC /* libtidy.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1082,6 +1083,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = C69AB10910546FE500F32FBD;
 			remoteInfo = "static libetpan";
+		};
+		FC1AC63926C3B711007C75EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D773AC7325A1C5B20011D019 /* ctemplate.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C6181CFF19FCBD1F0088FBBC;
+			remoteInfo = "ctemplate-ios";
+		};
+		FC1AC64326C3B762007C75EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC1AC63F26C3B762007C75EC /* Tidy.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6F61FCE1703DFC70073032E;
+			remoteInfo = tidy;
+		};
+		FC1AC64526C3B775007C75EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC1AC63F26C3B762007C75EC /* Tidy.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C6F61FCD1703DFC70073032E;
+			remoteInfo = tidy;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -2204,6 +2226,7 @@
 		F87F190816BB62690012652F /* MCOIMAPFetchFoldersOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPFetchFoldersOperation.h; sourceTree = "<group>"; };
 		F87F190B16BB62B00012652F /* MCOIMAPFetchFoldersOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MCOIMAPFetchFoldersOperation.mm; sourceTree = "<group>"; };
 		F8EA941416BAED6E0011AC6F /* MCOIMAPSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCOIMAPSession.h; sourceTree = "<group>"; };
+		FC1AC63F26C3B762007C75EC /* Tidy.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tidy.xcodeproj; path = "tidy-html5/build-mac/Tidy.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2270,6 +2293,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC1AC64726C3B896007C75EC /* libtidy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2581,6 +2605,7 @@
 			children = (
 				851682AC1C6A2484005B86C4 /* Default-568h@2x.png */,
 				D773AC7325A1C5B20011D019 /* ctemplate.xcodeproj */,
+				FC1AC63F26C3B762007C75EC /* Tidy.xcodeproj */,
 				D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */,
 				C6BD28A1170BD78E00A91AC1 /* mailcore-framework */,
 				C64EA545169E78B100778456 /* src */,
@@ -3269,6 +3294,14 @@
 			path = imap;
 			sourceTree = "<group>";
 		};
+		FC1AC64026C3B762007C75EC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC1AC64426C3B762007C75EC /* libtidy.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3417,6 +3450,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				FC1AC64626C3B775007C75EC /* PBXTargetDependency */,
+				FC1AC63A26C3B711007C75EC /* PBXTargetDependency */,
 				D7FBE8FC23D9643D003AB2E7 /* PBXTargetDependency */,
 			);
 			name = "static mailcore2 ios";
@@ -3481,6 +3516,10 @@
 					ProductGroup = D7FBE8EE23D96428003AB2E7 /* Products */;
 					ProjectRef = D7FBE8ED23D96428003AB2E7 /* libetpan.xcodeproj */;
 				},
+				{
+					ProductGroup = FC1AC64026C3B762007C75EC /* Products */;
+					ProjectRef = FC1AC63F26C3B762007C75EC /* Tidy.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -3530,6 +3569,13 @@
 			fileType = archive.ar;
 			path = "libetpan-ios.a";
 			remoteRef = D7FBE8F923D96428003AB2E7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC1AC64426C3B762007C75EC /* libtidy.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtidy.a;
+			remoteRef = FC1AC64326C3B762007C75EC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4253,6 +4299,16 @@
 			name = "static libetpan";
 			targetProxy = D7FBE8FD23D9644A003AB2E7 /* PBXContainerItemProxy */;
 		};
+		FC1AC63A26C3B711007C75EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ctemplate-ios";
+			targetProxy = FC1AC63926C3B711007C75EC /* PBXContainerItemProxy */;
+		};
+		FC1AC64626C3B775007C75EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = tidy;
+			targetProxy = FC1AC64526C3B775007C75EC /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -4695,8 +4751,13 @@
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
 				EXECUTABLE_PREFIX = lib;
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/icu4c/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
+				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" /usr/include/tidy /usr/include/libxml2";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -4710,8 +4771,13 @@
 				DEAD_CODE_STRIPPING = NO;
 				ENABLE_BITCODE = YES;
 				EXECUTABLE_PREFIX = lib;
+				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"";
+				IOS_LIBRARY_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/icu4c/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
+				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" /usr/include/tidy /usr/include/libxml2";
+				OSX_LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "MailCore-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

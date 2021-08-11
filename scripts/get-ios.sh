@@ -6,11 +6,11 @@ popd > /dev/null
 
 . "$scriptpath/include.sh/build-dep.sh"
 
-deps="ctemplate-ios tidy-html5-ios"
-for dep in $deps ; do
-  name="$dep"
-  get_prebuilt_dep
-done
+#deps="ctemplate-ios tidy-html5-ios"
+#for dep in $deps ; do
+#  name="$dep"
+#  get_prebuilt_dep
+#done
 
 deps+=" libsasl-ios"
 if test "x$CONFIGURATION_BUILD_DIR" != x ; then
