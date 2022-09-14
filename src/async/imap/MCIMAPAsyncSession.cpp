@@ -64,7 +64,7 @@ IMAPAsyncSession::IMAPAsyncSession()
     mAuthType = AuthTypeSASLNone;
     mConnectionType = ConnectionTypeClear;
     mCheckCertificateEnabled = true;
-    mVoIPEnabled = true;
+    mVoIPEnabled = false;
     mDefaultNamespace = NULL;
     mTimeout = 30.;
     mConnectionLogger = NULL;
