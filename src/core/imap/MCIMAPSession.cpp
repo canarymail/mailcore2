@@ -2647,17 +2647,23 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         }
     }
     
-    if (clist_begin(hdrlist) != NULL) {
-        struct mailimap_header_list * imap_hdrlist;
+    bool wantsAllHeaders = (requestKind && IMAPMessagesRequestKindAllHeaders) != 0;
+    
+    if (wantsAllHeaders || clist_begin(hdrlist) != NULL) {
         struct mailimap_section * section;
-        
-        imap_hdrlist = mailimap_header_list_new(hdrlist);
-        section = mailimap_section_new_header_fields(imap_hdrlist);
+        if (wantsAllHeaders) {
+            section = mailimap_section_new_header();
+        } else {
+            struct mailimap_header_list * imap_hdrlist;
+            imap_hdrlist = mailimap_header_list_new(hdrlist);
+            section = mailimap_section_new_header_fields(imap_hdrlist);
+        }
         fetch_att = mailimap_fetch_att_new_body_peek_section(section);
         mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att);
         needsHeader = true;
     }
-    else {
+    
+    if (clist_begin(hdrlist) == NULL) {
         clist_free(hdrlist);
     }
     
