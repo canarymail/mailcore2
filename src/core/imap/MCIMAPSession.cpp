@@ -2647,7 +2647,7 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         }
     }
     
-    bool wantsAllHeaders = (requestKind && IMAPMessagesRequestKindAllHeaders) != 0;
+    bool wantsAllHeaders = (requestKind & IMAPMessagesRequestKindAllHeaders) != 0;
     
     if (wantsAllHeaders || clist_begin(hdrlist) != NULL) {
         struct mailimap_section * section;
