@@ -52,6 +52,14 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setGmailLabels, gmailLabels)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailThreadID, gmailThreadID)
 MCO_OBJC_SYNTHESIZE_SCALAR(uint64_t, uint64_t, setGmailMessageID, gmailMessageID)
 
+- (NSData *)rfc822Data {
+    return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->rfc822Data());
+}
+
+- (void)setRfc822Data:(NSData *)rfc822Data {
+    return MCO_NATIVE_INSTANCE->setRFCData([rfc822Data mco_mcData]);
+}
+
 - (MCOAbstractPart *) partForPartID:(NSString *)partID
 {
     return MCO_TO_OBJC(MCO_NATIVE_INSTANCE->partForPartID([partID mco_mcString]));

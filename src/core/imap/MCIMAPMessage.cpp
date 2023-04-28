@@ -23,6 +23,7 @@ void IMAPMessage::init()
     mCustomFlags = NULL;
     mMainPart = NULL;
     mGmailLabels = NULL;
+    mRfc822Data = NULL;
     mModSeqValue = 0;
     mGmailThreadID = 0;
     mGmailMessageID = 0;
@@ -186,6 +187,14 @@ void IMAPMessage::setGmailThreadID(uint64_t threadID)
 uint64_t IMAPMessage::gmailThreadID()
 {
     return mGmailThreadID;
+}
+
+void IMAPMessage::setRFCData(Data *rfc822Data) {
+    mRfc822Data = (Data *) rfc822Data -> retain();
+}
+
+Data * IMAPMessage::rfc822Data() {
+    return mRfc822Data;
 }
 
 AbstractPart * IMAPMessage::partForPartID(String * partID)

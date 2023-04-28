@@ -66,6 +66,9 @@
 /** Gmail thread ID of the message */
 @property (nonatomic, assign) uint64_t gmailThreadID;
 
+/** RFC822 Data */
+@property (nonatomic, strong) NSData * rfc822Data;
+
 /**
  Returns the part with the given part identifier.
  @param partID A part identifier looks like 1.2.1
