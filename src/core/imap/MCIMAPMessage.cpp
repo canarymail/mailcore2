@@ -52,6 +52,7 @@ IMAPMessage::IMAPMessage(IMAPMessage * other) : AbstractMessage(other)
     setGmailLabels(other->gmailLabels());
     setGmailThreadID(other->gmailThreadID());
     setGmailMessageID(other->gmailMessageID());
+    setRFCData(other->rfc822Data());
 }
 
 IMAPMessage::~IMAPMessage()

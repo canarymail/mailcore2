@@ -2433,7 +2433,6 @@ static void msg_att_handler(struct mailimap_msg_att * msg_att, void * context)
             struct mailimap_msg_att_static * att_static;
             
             att_static = att_item->att_data.att_static;
-            printf("[MCDebug] Static: %d", att_static->att_type);
             if (att_static->att_type == MAILIMAP_MSG_ATT_INTERNALDATE) {
                 msg->header()->importIMAPInternalDate(att_static->att_data.att_internal_date);
             } else if (att_static->att_type == MAILIMAP_MSG_ATT_RFC822_SIZE) {
