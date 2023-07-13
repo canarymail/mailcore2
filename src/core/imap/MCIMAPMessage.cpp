@@ -191,7 +191,10 @@ uint64_t IMAPMessage::gmailThreadID()
 }
 
 void IMAPMessage::setRFCData(Data *rfc822Data) {
-    mRfc822Data = (Data *) rfc822Data -> retain();
+    if (mRfc822Data != NULL) {
+        mRfc822Data->release();
+    }
+    mRfc822Data = rfc822Data;
 }
 
 Data * IMAPMessage::rfc822Data() {
