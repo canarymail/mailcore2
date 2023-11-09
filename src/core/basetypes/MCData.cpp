@@ -787,20 +787,8 @@ static int lepMixedConv(const char * tocode, const char * fromcode,
                         const char * str, size_t length,
                         char * result, size_t * result_len)
 {
-    int r;
-    
-    if (strcasecmp(fromcode, "iso-2022-jp-2") == 0) {
-        r = lepCFConv(tocode, fromcode, str, length,
-                      result, result_len);
-        if (r == MAIL_CHARCONV_NO_ERROR)
-            return r;
-    }
-    
-    r = lepIConv(tocode, fromcode, str, length,
-                 result, result_len);
-    if (r == MAIL_CHARCONV_NO_ERROR)
-        return r;
-    
+    int r = lepCFConv(tocode, fromcode, str, length,
+                  result, result_len);
     return r;
 }
 #endif
