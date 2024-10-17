@@ -85,8 +85,10 @@ void IMAPIdleOperation::main()
     
     session()->session()->idle(folder(), mLastKnownUid, &response, &error);
     setError(error);
-//    mResponse = response;
-//    MC_SAFE_RETAIN(mResponse);
+    if (response != NULL) {
+        mResponse = response;
+        MC_SAFE_RETAIN(mResponse);
+    }
     
     performMethodOnCallbackThread((Object::Method) &IMAPIdleOperation::unprepare, NULL, true);
 }

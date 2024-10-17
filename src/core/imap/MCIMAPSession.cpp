@@ -3720,6 +3720,8 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
         return;
     }
     
+    bool has_response_data = false;
+    
     if (!mImap->imap_selection_info->sel_has_exists && !mImap->imap_selection_info->sel_has_recent) {
         int r;
         r = mailstream_wait_idle(mImap->imap_stream, MAX_IDLE_DELAY);
@@ -3737,8 +3739,11 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
                 MCLog("interrupted by user");
                 break;
             case MAILSTREAM_IDLE_HASDATA:
+            {
+                has_response_data = true;
                 MCLog("something on the socket");
                 break;
+            }
             case MAILSTREAM_IDLE_TIMEOUT:
                 MCLog("idle timeout");
                 break;
@@ -3746,6 +3751,13 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
     }
     else {
         MCLog("found info before idling");
+    }
+    
+    if (has_response_data) {
+        char * response_data = mailimap_read_line(mImap);
+        if (response_data != NULL) {
+            *response = new Data(response_data, (unsigned int) strlen(response_data));
+        }
     }
     
     r = mailimap_idle_done(mImap);
@@ -3763,6 +3775,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
         * pError = ErrorIdle;
         return;
     }
+    
     * pError = ErrorNone;
 }
 
