@@ -3675,16 +3675,17 @@ bool IMAPSession::setupIdle()
     return canIdle;
 }
 
-void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response, ErrorCode * pError)
+Data * IMAPSession::idle(String * folder, uint32_t lastKnownUID, ErrorCode * pError)
 {
     int r;
+    Data * response = NULL;
     
     setNeedsReselect();
 
     // connection thread
     selectIfNeeded(folder, pError);
     if (* pError != ErrorNone)
-        return;
+        return NULL;
     
     if (lastKnownUID != 0) {
         Array * msgs;
@@ -3692,14 +3693,14 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
         msgs = fetchMessagesByUID(folder, IMAPMessagesRequestKindUid, IndexSet::indexSetWithRange(RangeMake(lastKnownUID, UINT64_MAX)),
                                   NULL, pError);
         if (* pError != ErrorNone)
-            return;
+            return NULL;
         if (msgs->count() > 0) {
             IMAPMessage * msg;
             
             msg = (IMAPMessage *) msgs->objectAtIndex(0);
             if (msg->uid() > lastKnownUID) {
                 MCLog("found msg UID %u %u", (unsigned int) msg->uid(), (unsigned int) lastKnownUID);
-                return;
+                return NULL;
             }
         }
     }
@@ -3708,16 +3709,16 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        return;
+        return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
         mShouldDisconnect = true;
         * pError = ErrorParse;
-        return;
+        return NULL;
     }
     else if (hasError(r)) {
         * pError = ErrorIdle;
-        return;
+        return NULL;
     }
     
     bool has_response_data = false;
@@ -3732,7 +3733,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
                 mShouldDisconnect = true;
                 * pError = ErrorConnection;
                 MCLog("error or cancelled");
-                return;
+                return NULL;
             }
             case MAILSTREAM_IDLE_INTERRUPTED:
                 * pError = ErrorIdleInterrupted;
@@ -3756,7 +3757,7 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
     if (has_response_data) {
         char * response_data = mailimap_read_line(mImap);
         if (response_data != NULL) {
-            *response = new Data(response_data, (unsigned int) strlen(response_data));
+            response = new Data(response_data, (unsigned int) strlen(response_data));
         }
     }
     
@@ -3764,19 +3765,20 @@ void IMAPSession::idle(String * folder, uint32_t lastKnownUID, Data ** response,
     if (r == MAILIMAP_ERROR_STREAM) {
         mShouldDisconnect = true;
         * pError = ErrorConnection;
-        return;
+        return NULL;
     }
     else if (r == MAILIMAP_ERROR_PARSE) {
         mShouldDisconnect = true;
         * pError = ErrorParse;
-        return;
+        return NULL;
     }
     else if (hasError(r)) {
         * pError = ErrorIdle;
-        return;
+        return NULL;
     }
     
     * pError = ErrorNone;
+    return response;
 }
 
 void IMAPSession::interruptIdle()

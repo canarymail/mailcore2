@@ -69,7 +69,6 @@ void IMAPIdleOperation::main()
     }
     
     ErrorCode error;
-    Data * response;
     session()->session()->selectIfNeeded(folder(), &error);
     if (error != ErrorNone) {
         setError(error);
@@ -83,9 +82,9 @@ void IMAPIdleOperation::main()
         return;
     }
     
-    session()->session()->idle(folder(), mLastKnownUid, &response, &error);
+    Data * response = session()->session()->idle(folder(), mLastKnownUid, &error);
     setError(error);
-    if (response != NULL) {
+    if (error == ErrorNone && response != NULL) {
         mResponse = response;
         MC_SAFE_RETAIN(mResponse);
     }
