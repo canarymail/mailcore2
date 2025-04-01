@@ -237,6 +237,9 @@ Attachment::Attachment(Attachment * other) : AbstractPart(other)
     init();
     setData(other->data());
     setPartID(other->partID());
+    if (other->mimeType() != NULL) {
+        setMimeType(other->mimeType());
+    }
 }
 
 Attachment::~Attachment()
