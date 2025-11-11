@@ -525,6 +525,7 @@
             "aspmx2\\.googlemail\\.com",
             "aspmx\\.l\\.google\\.com",
             "aspmx3\\.googlemail\\.com",
+            "smtp\\.google\\.com",
             "alt1\\.aspmx\\.l\\.google\\.com",
             "alt2\\.aspmx\\.l\\.google\\.com",
             "alt1\\.gmail-smtp-in\\.l\\.google\\.com",
