@@ -283,6 +283,7 @@ namespace mailcore {
         bool mRamblerRuServer;
         bool mHermesServer;
         bool mQipServer;
+        bool mCoremailServer;
         bool mNeedsReselect;
         
         unsigned int mLastFetchedSequenceNumber;

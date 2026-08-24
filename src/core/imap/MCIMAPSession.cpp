@@ -401,6 +401,7 @@ void IMAPSession::init()
     mRamblerRuServer = false;
     mHermesServer = false;
     mQipServer = false;
+    mCoremailServer = false;
     mLastFetchedSequenceNumber = 0;
     mCurrentFolder = NULL;
     mCurrentCapabilities = NULL;
@@ -732,8 +733,12 @@ void IMAPSession::connect(ErrorCode * pError)
     if (mImap->imap_response != NULL) {
         MC_SAFE_REPLACE_RETAIN(String, mWelcomeString, String::stringWithUTF8Characters(mImap->imap_response));
         mYahooServer = (mWelcomeString->locationOfString(MCSTR("yahoo.com")) != -1);
+        // NetEase's Coremail backend serves 163.com, 126.com, yeah.net and the
+        // qiye.163.com corporate tenants on customer domains. Detect it from the
+        // greeting, not the hostname, so custom domains are covered too.
+        mCoremailServer = (mWelcomeString->locationOfString(MCSTR("Coremail System IMap Server Ready")) != -1);
 #ifdef LIBETPAN_HAS_MAILIMAP_163_WORKAROUND
-        if (mWelcomeString->locationOfString(MCSTR("Coremail System IMap Server Ready")) != -1)
+        if (mCoremailServer)
             mailimap_set_163_workaround_enabled(mImap, 1);
 #endif
         if (mWelcomeString->locationOfString(MCSTR("Courier-IMAP")) != -1) {
@@ -1012,17 +1017,21 @@ void IMAPSession::login(ErrorCode * pError)
     }
     enableFeatures();
 
-    // RFC 2971: some servers (imap.163.com and the other NetEase hosts: 126.com,
-    // yeah.net) require the client to identify itself with ID right after a
-    // successful LOGIN. Until they get it they refuse to SELECT any mailbox --
-    // LIST still works, so folders show up but INBOX fails with
-    // ErrorNonExistantFolder -- or they simply drop the connection.
+    // RFC 2971: NetEase's Coremail servers refuse to SELECT any mailbox until
+    // the client identifies itself with ID right after a successful LOGIN.
+    // Until they get it, LIST still works -- so folders show up but INBOX
+    // fails with ErrorNonExistantFolder -- or they drop the connection.
     // This has to happen per connection, before the first SELECT.
+    //
+    // Gated on the Coremail greeting so no other server pays an extra round
+    // trip per connection for a NetEase-only workaround.
+    //
     // enableFeatures() above swallows compression errors, which can leave
-    // mShouldDisconnect set. identity() calls connectIfNeeded(), so without this
-    // guard it would tear down and reopen the connection in the middle of login
-    // and send ID on a fresh, unauthenticated stream.
-    if (isIdentityEnabled() && !mShouldDisconnect && mState == STATE_LOGGEDIN &&
+    // mShouldDisconnect set. identity() calls connectIfNeeded(), so without
+    // that guard it would tear down and reopen the connection mid-login and
+    // send ID on a fresh, unauthenticated stream.
+    if (mCoremailServer && isIdentityEnabled() && !mShouldDisconnect &&
+        mState == STATE_LOGGEDIN &&
         mClientIdentity != NULL && mClientIdentity->allInfoKeys()->count() > 0) {
         ErrorCode identityError = ErrorNone;
         IMAPIdentity * serverIdentity = identity(mClientIdentity, &identityError);
@@ -1037,7 +1046,6 @@ void IMAPSession::login(ErrorCode * pError)
             MCLog("identity failed");
         }
         else {
-            MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
             MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
         }
     }
