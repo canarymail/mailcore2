@@ -1012,6 +1012,36 @@ void IMAPSession::login(ErrorCode * pError)
     }
     enableFeatures();
 
+    // RFC 2971: some servers (imap.163.com and the other NetEase hosts: 126.com,
+    // yeah.net) require the client to identify itself with ID right after a
+    // successful LOGIN. Until they get it they refuse to SELECT any mailbox --
+    // LIST still works, so folders show up but INBOX fails with
+    // ErrorNonExistantFolder -- or they simply drop the connection.
+    // This has to happen per connection, before the first SELECT.
+    // enableFeatures() above swallows compression errors, which can leave
+    // mShouldDisconnect set. identity() calls connectIfNeeded(), so without this
+    // guard it would tear down and reopen the connection in the middle of login
+    // and send ID on a fresh, unauthenticated stream.
+    if (isIdentityEnabled() && !mShouldDisconnect && mState == STATE_LOGGEDIN &&
+        mClientIdentity != NULL && mClientIdentity->allInfoKeys()->count() > 0) {
+        ErrorCode identityError = ErrorNone;
+        IMAPIdentity * serverIdentity = identity(mClientIdentity, &identityError);
+        if (identityError == ErrorConnection || identityError == ErrorParse) {
+            // The stream is gone, there is nothing left to log into.
+            MCLog("identity failed, connection lost");
+            * pError = identityError;
+            return;
+        }
+        else if (identityError != ErrorNone) {
+            // ID is optional: a server that rejects it is still usable.
+            MCLog("identity failed");
+        }
+        else {
+            MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
+            MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
+        }
+    }
+
     if (isAutomaticConfigurationEnabled()) {
         bool hasDefaultNamespace = false;
         if (isNamespaceEnabled()) {
@@ -1062,25 +1092,6 @@ void IMAPSession::login(ErrorCode * pError)
             mDelimiter = folder->delimiter();
             IMAPNamespace * defaultNamespace = IMAPNamespace::namespaceWithPrefix(MCSTR(""), folder->delimiter());
             setDefaultNamespace(defaultNamespace);
-        }
-        
-        if (isIdentityEnabled()) {
-//            IMAPIdentity * serverIdentity = NULL;
-//            if (mFetchedIdentity) {
-//                serverIdentity = mFetchedIdentity;
-//            } else {
-//                serverIdentity = identity(clientIdentity(), pError);
-//            }
-//            if (* pError != ErrorNone) {
-//                // Ignore identity errors
-//                MCLog("fetch identity failed");
-//            }
-//            else {
-//                if (mFetchedIdentity != serverIdentity) {
-//                    MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mFetchedIdentity, serverIdentity);
-//                }
-//                MC_SAFE_REPLACE_RETAIN(IMAPIdentity, mServerIdentity, serverIdentity);
-//            }
         }
     }
     else {
