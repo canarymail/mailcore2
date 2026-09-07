@@ -4329,7 +4329,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -4366,7 +4366,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate-ios",
 					"-letpan-ios",
@@ -4503,7 +4503,7 @@
 				"HEADER_SEARCH_PATHS[sdk=macosx*]" = "$(OSX_HEADERS_SEARCH_PATHS)";
 				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/libetpan-ios/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
 				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/libetpan-ios/lib\" \"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/libetpan/lib\"",
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
@@ -4547,7 +4547,7 @@
 				"HEADER_SEARCH_PATHS[sdk=macosx*]" = "$(OSX_HEADERS_SEARCH_PATHS)";
 				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" \"$(SRCROOT)/../Externals/libetpan-ios/include\" \"$(SRCROOT)/../Externals/ctemplate-ios/include\" \"$(SRCROOT)/../Externals/tidy-html5-ios/include/tidy\" /usr/include/libxml2";
 				IOS_LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/libetpan-ios/lib\" \"$(SRCROOT)/../Externals/ctemplate-ios/lib\" \"$(SRCROOT)/../Externals/libsasl-ios/lib\" \"$(SRCROOT)/../Externals/tidy-html5-ios/lib\"";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../Externals/libetpan/lib\"",
 					"\"$(SRCROOT)/../Externals/icu4c/lib\"",
@@ -4567,7 +4567,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -4580,7 +4580,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = MailCore;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -4591,7 +4591,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -4601,7 +4601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -4753,7 +4753,7 @@
 				EXECUTABLE_PREFIX = lib;
 				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"";
 				IOS_LIBRARY_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/icu4c/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
 				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" /usr/include/tidy /usr/include/libxml2";
@@ -4773,7 +4773,7 @@
 				EXECUTABLE_PREFIX = lib;
 				IOS_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\"";
 				IOS_LIBRARY_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Externals/icu4c/lib\"";
 				ONLY_ACTIVE_ARCH = NO;
 				OSX_HEADERS_SEARCH_PATHS = "\"$(SRCROOT)/../src/core/basetypes/icu-ucsdet/include\" /usr/include/tidy /usr/include/libxml2";
@@ -4799,7 +4799,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate",
 					"-letpan",
@@ -4834,7 +4834,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "framework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				OTHER_LDFLAGS = (
 					"-lctemplate",
 					"-letpan",
