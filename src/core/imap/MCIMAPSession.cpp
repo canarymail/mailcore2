@@ -2770,7 +2770,20 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         MCLog("error parse");
         mShouldDisconnect = true;
         * pError = ErrorParse;
-        return NULL;
+        // The message attribute handler runs as the response streams in, so every
+        // message decoded before the grammar broke is already complete and valid.
+        // Return those alongside the error rather than discarding them: one malformed
+        // message otherwise costs the caller the entire batch. The server answers in
+        // ascending order, so what comes back is a prefix of what was requested and
+        // the first missing uid identifies the offending message.
+        // fetch_result is deliberately not freed here -- it is uninitialised on this
+        // path, matching the other error branches.
+        IMAPSyncResult * partialResult;
+        partialResult = new IMAPSyncResult();
+        partialResult->setModifiedOrAddedMessages(messages);
+        partialResult->setVanishedMessages(vanishedMessages);
+        partialResult->autorelease();
+        return partialResult;
     }
     else if (hasError(r)) {
         MCLog("error fetch");

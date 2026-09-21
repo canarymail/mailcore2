@@ -63,6 +63,12 @@ typedef void (^CompletionType)(NSError *error, NSArray * messages, MCOIndexSet *
     nativeType *op = MCO_NATIVE_INSTANCE;
     if (op->error() == mailcore::ErrorNone) {
         _completionBlock(nil, MCO_TO_OBJC(op->messages()), MCO_TO_OBJC(op->vanishedMessages()));
+    } else if (op->error() == mailcore::ErrorParse) {
+        // A parse failure aborts the response part-way through, but the messages
+        // decoded before that point are complete. Hand them over with the error so
+        // the caller can keep them and work out which message broke the parser.
+        // Callers that only check the error are unaffected.
+        _completionBlock([NSError mco_errorWithErrorCode:op->error()], MCO_TO_OBJC(op->messages()), nil);
     } else {
         _completionBlock([NSError mco_errorWithErrorCode:op->error()], nil, nil);
     }
