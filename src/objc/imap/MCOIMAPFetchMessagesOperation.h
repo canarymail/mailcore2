@@ -34,11 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
  - On success `error` will be nil and `messages` will be an array of MCOIMAPMessage.
    `vanishedMessages` will contain the messages removed on the server if the server supports QRESYNC and if it was a sync request
  
- - On `MCOErrorParse`, `messages` is NOT nil: the response is decoded as it streams in,
-   so it holds every message that parsed cleanly before the parser gave up. Keep these
-   messages -- discarding them loses the whole batch to one bad message. An empty array
-   is still meaningful and is not the same as nil: it says the FETCH ran and broke
-   before any message completed.
+ - On `MCOErrorParse`, `messages` is usually NOT nil: the response is decoded as it
+   streams in, so it holds every message that parsed cleanly before the parser gave up.
+   Keep these messages -- discarding them loses the whole batch to one bad message. An
+   empty array is still meaningful and is not the same as nil: it says the FETCH ran and
+   broke before any message completed. See below for the one case that does give nil.
 
    What comes back is NOT necessarily a contiguous prefix of what was requested, and a
    uid being absent does NOT mean it is the one that broke the parser. UID sets can be
