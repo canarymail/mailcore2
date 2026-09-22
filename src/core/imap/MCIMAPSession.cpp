@@ -2770,7 +2770,19 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
         MCLog("error parse");
         mShouldDisconnect = true;
         * pError = ErrorParse;
-        return NULL;
+        // Messages fully decoded before the parser failed are returned alongside
+        // ErrorParse. This is not necessarily a contiguous prefix of the request:
+        // UID sets can be sparse, CHANGEDSINCE only returns changed messages, and
+        // the attribute handler drops messages missing required attributes. The
+        // malformed message lies above the highest returned uid.
+        // fetch_result is deliberately not freed here -- it is uninitialised on this
+        // path, matching the other error branches.
+        IMAPSyncResult * partialResult;
+        partialResult = new IMAPSyncResult();
+        partialResult->setModifiedOrAddedMessages(messages);
+        partialResult->setVanishedMessages(vanishedMessages);
+        partialResult->autorelease();
+        return partialResult;
     }
     else if (hasError(r)) {
         MCLog("error fetch");
@@ -2796,6 +2808,16 @@ IMAPSyncResult * IMAPSession::fetchMessages(String * folder, IMAPMessagesRequest
                 result = fetchMessages(folder, requestKind, fetchByUID,
                     imapset, uidsFilter, numbersFilter,
                     modseq, NULL, progressCallback, extraHeaders, pError);
+                // Hand the inner call's error back rather than falling through to the
+                // unconditional ErrorNone below. It reports through the same pError,
+                // so without this a failed retry is indistinguishable from a clean
+                // fetch -- and now that a parse error carries a partial result, the
+                // caller would take a truncated batch for the whole folder page and
+                // never ask for the rest.
+                if (* pError != ErrorNone) {
+                    mailimap_fetch_list_free(fetch_result);
+                    return result;
+                }
                 if (result != NULL) {
                     if (result->modifiedOrAddedMessages() != NULL) {
                         if (result->modifiedOrAddedMessages()->count() > 0) {
