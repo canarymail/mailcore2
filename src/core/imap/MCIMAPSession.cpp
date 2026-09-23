@@ -1365,7 +1365,11 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
     if (status != NULL) {
         
             struct mailimap_status_info * status_info;
-            for(cur = clist_begin(status->st_info_list) ; cur != NULL ;
+            // st_info_list is NULL when the server answers with an empty attribute list
+            // (`* STATUS "folder" ()`): the parser tolerates the resulting parse error and
+            // leaves the list unset, so the response still arrives as MAILIMAP_NO_ERROR.
+            // clist_begin() is an unguarded ((lst)->first), unlike clist_next/clist_content.
+            for(cur = status->st_info_list != NULL ? clist_begin(status->st_info_list) : NULL ; cur != NULL ;
                 cur = clist_next(cur)) {                
                 
                 status_info = (struct mailimap_status_info *) clist_content(cur);
@@ -1388,7 +1392,7 @@ IMAPFolderStatus * IMAPSession::folderStatus(String * folder, ErrorCode * pError
                         break;
                     case MAILIMAP_STATUS_ATT_EXTENSION: {
                         struct mailimap_extension_data * ext_data = status_info->st_ext_data;
-                        if (ext_data->ext_extension == &mailimap_extension_condstore) {
+                        if (ext_data != NULL && ext_data->ext_extension == &mailimap_extension_condstore) {
                             struct mailimap_condstore_status_info * status_info = (struct mailimap_condstore_status_info *) ext_data->ext_data;
                             fs->setHighestModSeqValue(status_info->cs_highestmodseq_value);
                         }
