@@ -49,3 +49,6 @@ build-windows/mailcore2/test/x64/Release
 build-windows/mailcore2/test/Debug
 build-windows/mailcore2/test/x64/Debug
 cocoapods-build
+
+# Persistent Xcode compilation results.
+/.compilation-cache/
