@@ -267,6 +267,8 @@ IMAPIdentity * IMAPAsyncConnection::clientIdentity()
 IMAPOperation * IMAPAsyncConnection::disconnectOperation()
 {
     IMAPDisconnectOperation * op = new IMAPDisconnectOperation();
+    // Keep the owner alive through IMAPOperation's deferred main-thread completion.
+    op->setMainSession(mOwner);
     op->setSession(this);
     op->autorelease();
     return op;
@@ -275,6 +277,8 @@ IMAPOperation * IMAPAsyncConnection::disconnectOperation()
 IMAPOperation * IMAPAsyncConnection::reconnectOperation()
 {
     IMAPReconnectOperation * op = new IMAPReconnectOperation();
+    // Keep the owner alive through IMAPOperation's deferred main-thread completion.
+    op->setMainSession(mOwner);
     op->setSession(this);
     op->autorelease();
     return op;
