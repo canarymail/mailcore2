@@ -20,6 +20,51 @@
 
 using namespace mailcore;
 
+static const char * parameterValue(struct mailmime_parameter * param, const char * name)
+{
+    if (param != NULL && strcasecmp(param->pa_name, name) == 0) {
+        return param->pa_value;
+    }
+    return NULL;
+}
+
+// Joins RFC 2231 continuations (name*0, name*1, ...), which libetpan keeps as separate parameters.
+static String * joinedParameterContinuations(clist * parameters, bool isDisposition, const char * name)
+{
+    if (parameters == NULL) {
+        return NULL;
+    }
+    Data * value = NULL;
+    for(unsigned int i = 0 ; ; i ++) {
+        char key[64];
+        snprintf(key, sizeof(key), "%s*%u", name, i);
+        const char * segment = NULL;
+        for(clistiter * cur = clist_begin(parameters) ; cur != NULL && segment == NULL ; cur = clist_next(cur)) {
+            if (isDisposition) {
+                struct mailmime_disposition_parm * dsp_parm = (struct mailmime_disposition_parm *) clist_content(cur);
+                if (dsp_parm->pa_type == MAILMIME_DISPOSITION_PARM_PARAMETER) {
+                    segment = parameterValue(dsp_parm->pa_data.pa_parameter, key);
+                }
+            }
+            else {
+                segment = parameterValue((struct mailmime_parameter *) clist_content(cur), key);
+            }
+        }
+        if (segment == NULL) {
+            break;
+        }
+        if (value == NULL) {
+            value = Data::data();
+        }
+        value->appendBytes(segment, (unsigned int) strlen(segment));
+    }
+    if (value == NULL) {
+        return NULL;
+    }
+    value->appendBytes("", 1);
+    return String::stringByDecodingMIMEHeaderValue(value->bytes());
+}
+
 static char * findBlank(const char * str)
 {
     char * p = (char *) str;
@@ -573,6 +618,16 @@ Attachment * Attachment::attachmentWithSingleMIME(struct mailmime * mime)
     }
     else if (name != NULL) {
         result->setFilename(String::stringByDecodingMIMEHeaderValue(name));
+    }
+    else {
+        String * joinedFilename = NULL;
+        if (single_fields.fld_disposition != NULL) {
+            joinedFilename = joinedParameterContinuations(single_fields.fld_disposition->dsp_parms, true, "filename");
+        }
+        if (joinedFilename == NULL) {
+            joinedFilename = joinedParameterContinuations(ct_parameters, false, "name");
+        }
+        result->setFilename(joinedFilename);
     }
     if (content_id != NULL) {
         result->setContentID(String::stringWithUTF8Characters(content_id));
