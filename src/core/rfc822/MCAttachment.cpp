@@ -20,6 +20,119 @@
 
 using namespace mailcore;
 
+static const char * parameterValue(struct mailmime_parameter * param, const char * name)
+{
+    if (param != NULL && strcasecmp(param->pa_name, name) == 0) {
+        return param->pa_value;
+    }
+    return NULL;
+}
+
+static const char * findParameter(clist * parameters, bool isDisposition, const char * key)
+{
+    for(clistiter * cur = clist_begin(parameters) ; cur != NULL ; cur = clist_next(cur)) {
+        const char * value = NULL;
+        if (isDisposition) {
+            struct mailmime_disposition_parm * dsp_parm = (struct mailmime_disposition_parm *) clist_content(cur);
+            if (dsp_parm->pa_type == MAILMIME_DISPOSITION_PARM_PARAMETER) {
+                value = parameterValue(dsp_parm->pa_data.pa_parameter, key);
+            }
+        }
+        else {
+            value = parameterValue((struct mailmime_parameter *) clist_content(cur), key);
+        }
+        if (value != NULL) {
+            return value;
+        }
+    }
+    return NULL;
+}
+
+static int hexValue(char c)
+{
+    if (c >= '0' && c <= '9')
+        return c - '0';
+    if (c >= 'a' && c <= 'f')
+        return c - 'a' + 10;
+    if (c >= 'A' && c <= 'F')
+        return c - 'A' + 10;
+    return -1;
+}
+
+// Appends an RFC 2231 extended value (charset'language'%XX...), reading the charset prefix on the first segment.
+static void appendEncodedSegment(Data * value, const char * segment, bool first, String ** charset)
+{
+    if (first) {
+        const char * firstQuote = strchr(segment, '\'');
+        const char * secondQuote = firstQuote != NULL ? strchr(firstQuote + 1, '\'') : NULL;
+        if (secondQuote != NULL) {
+            if (firstQuote > segment) {
+                * charset = Data::dataWithBytes(segment, (unsigned int) (firstQuote - segment))->stringWithCharset("us-ascii");
+            }
+            segment = secondQuote + 1;
+        }
+    }
+    for(const char * p = segment ; * p != 0 ; p ++) {
+        if (* p == '%' && hexValue(p[1]) >= 0 && hexValue(p[2]) >= 0) {
+            char c = (char) (hexValue(p[1]) * 16 + hexValue(p[2]));
+            value->appendBytes(&c, 1);
+            p += 2;
+        }
+        else {
+            value->appendBytes(p, 1);
+        }
+    }
+}
+
+// Joins RFC 2231 parameters (name*, name*0, name*1*, ...), which libetpan keeps as separate parameters.
+static String * joinedParameterContinuations(clist * parameters, bool isDisposition, const char * name)
+{
+    if (parameters == NULL) {
+        return NULL;
+    }
+    Data * value = NULL;
+    String * charset = NULL;
+    char key[64];
+    snprintf(key, sizeof(key), "%s*", name);
+    const char * single = findParameter(parameters, isDisposition, key);
+    if (single != NULL) {
+        value = Data::data();
+        appendEncodedSegment(value, single, true, &charset);
+    }
+    for(unsigned int i = 0 ; single == NULL ; i ++) {
+        snprintf(key, sizeof(key), "%s*%u*", name, i);
+        const char * segment = findParameter(parameters, isDisposition, key);
+        bool encoded = segment != NULL;
+        if (!encoded) {
+            snprintf(key, sizeof(key), "%s*%u", name, i);
+            segment = findParameter(parameters, isDisposition, key);
+        }
+        if (segment == NULL) {
+            break;
+        }
+        if (value == NULL) {
+            value = Data::data();
+        }
+        if (encoded) {
+            appendEncodedSegment(value, segment, i == 0, &charset);
+        }
+        else {
+            value->appendBytes(segment, (unsigned int) strlen(segment));
+        }
+    }
+    if (value == NULL) {
+        return NULL;
+    }
+    if (charset != NULL) {
+        String * result = value->stringWithCharset(charset->UTF8Characters());
+        if (result != NULL) {
+            return result;
+        }
+    }
+    value->appendBytes("", 1);
+    return String::stringByDecodingMIMEHeaderValue(value->bytes());
+}
+
 static char * findBlank(const char * str)
 {
     char * p = (char *) str;
@@ -573,6 +686,16 @@ Attachment * Attachment::attachmentWithSingleMIME(struct mailmime * mime)
     }
     else if (name != NULL) {
         result->setFilename(String::stringByDecodingMIMEHeaderValue(name));
+    }
+    else {
+        String * joinedFilename = NULL;
+        if (single_fields.fld_disposition != NULL) {
+            joinedFilename = joinedParameterContinuations(single_fields.fld_disposition->dsp_parms, true, "filename");
+        }
+        if (joinedFilename == NULL) {
+            joinedFilename = joinedParameterContinuations(ct_parameters, false, "name");
+        }
+        result->setFilename(joinedFilename);
     }
     if (content_id != NULL) {
         result->setContentID(String::stringWithUTF8Characters(content_id));
