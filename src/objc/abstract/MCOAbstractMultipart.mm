@@ -27,9 +27,8 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setParts, parts)
 
 - (void)updateWithDict:(NSDictionary *)dict {
     [super updateWithDict:dict];
-    if (dict[@"parts"]) {
-        self.parts = [NSArray fromSerialized:dict[@"parts"]];
-    }
+    // Older caches drop "parts" for empty multiparts; keep an empty array rather than NULL.
+    self.parts = dict[@"parts"] ? [NSArray fromSerialized:dict[@"parts"]] : @[];
 }
 
 - (NSDictionary *)toDict {
@@ -37,7 +36,7 @@ MCO_OBJC_SYNTHESIZE_ARRAY(setParts, parts)
     [ret addEntriesFromDictionary:[super toDict]];
 
     NSArray *parts = self.parts.toSerialized;
-    if (parts.count > 0) {
+    if (parts != nil) {
         ret[@"parts"] = parts;
     }
     

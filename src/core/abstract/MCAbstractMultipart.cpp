@@ -13,9 +13,15 @@ AbstractMultipart::AbstractMultipart(AbstractMultipart * other) : AbstractPart(o
     
     setPartType(other->partType());
     Array * parts = Array::array();
-    for(unsigned int i = 0 ; i < other->parts()->count() ; i ++) {
-        AbstractPart * part = (AbstractPart *) other->parts()->objectAtIndex(i);
-        parts->addObject(part->copy()->autorelease());
+    // A multipart restored from a cache without its "parts" key has no parts array.
+    if (other->parts() != NULL) {
+        for(unsigned int i = 0 ; i < other->parts()->count() ; i ++) {
+            AbstractPart * part = (AbstractPart *) other->parts()->objectAtIndex(i);
+            if (part == NULL) {
+                continue;
+            }
+            parts->addObject(part->copy()->autorelease());
+        }
     }
     setParts(parts);
 }
